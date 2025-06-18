@@ -1,0 +1,419 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedule Details</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'management_dash/css/style.min.css'%}">
+
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+           
+            background-color: #f0f8ff; /* Light background color */
+        }
+        .animated-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1; /* Send behind other content */
+        }
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 165, 0, 0.6);
+            animation: float 6s infinite ease-in-out;
+        }
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0); }
+        }
+        .circle1 { width: 100px; height: 100px; top: 20%; left: 10%; animation-duration: 4s; }
+        .circle2 { width: 150px; height: 150px; top: 30%; left: 70%; animation-duration: 5s; }
+        .circle3 { width: 80px; height: 80px; top: 70%; left: 40%; animation-duration: 6s; }
+        .circle4 { width: 120px; height: 120px; top: 50%; left: 80%; animation-duration: 3s; }
+        .table-container {
+            position: relative;
+            margin: 20px auto;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            z-index: 1; /* Ensure this is above the background */
+        }
+        .fade-in {
+            animation: fadeIn 0.5s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .table tbody tr {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .table tbody tr.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        th, td {
+            text-align: center; /* Center align table headers and cells */
+        }
+            .hidden-button {
+            position: absolute; /* Remove it from the normal document flow */
+            width: 0;          /* Set width to 0 */
+            height: 0;         /* Set height to 0 */
+            overflow: hidden;  /* Hide overflow */
+            opacity: 0;        /* Make it invisible */
+            pointer-events: none; /* Prevent mouse events */
+        }
+    </style>
+</head>
+
+<body>
+<!-- ! Body -->
+    <a class="skip-link sr-only" href="#skip-target">Skip to content</a>
+        <div class="page-flex">
+        <!-- ! Sidebar -->
+        {% include 'busowner/includes/sidebar.html' %}
+        
+            <div class="main-wrapper">
+            <!-- ! Main nav -->
+                <nav class="main-nav--bg">
+                    <div class="container main-nav">
+                        <div class="main-nav-start">
+                            <div class="main-nav-start">
+                                <div class="main-nav-start">
+                                    <div class="main-nav-start">
+                                      <div class="search-wrapper">
+                                        <form method="POST" action="" style="display: flex; flex-wrap: wrap; align-items: center;">
+                                            {% csrf_token %}
+                                            
+                                    
+                                            <!-- Employee Name Filter -->
+                                            <i data-feather="search" aria-hidden="true"></i>
+                                                        <input type="text" name="keywords" placeholder="Enter keywords ..." style="margin-right: 8px; border-radius: 5px; border: 1px solid #ddd; 
+                                                        flex: 1; min-width: 200px; height: 39px; line-height: 20px;">
+                                            
+                                            <!-- Journey Date Filter -->
+                                            {% comment %} <input type="date" name="journey_date" 
+                                                   style="margin-right: 8px; padding: 8px 12px; border-radius: 5px; border: 1px solid #ddd; 
+                                                   flex: 1; min-width: 200px; height: 39px; line-height: 20px;"> {% endcomment %}
+                                            
+                                            <!-- Time Period Filter using the Bus Dropdown Style -->
+                                            <div class="form-group mb-3" style="margin-right: 8px; padding: 8px 12px; 
+                                            flex: 1; min-width: 200px; height: 39px; line-height: 20px;">
+                                            
+                                                <select name="time_period" 
+                                                    style="padding: 10px 14px; 
+                                                    height: 40px; 
+                                                    line-height: 24px; 
+                                                    font-size: 16px;
+                                                    border-radius: 5px; 
+                                                    border: 0px solid #ddd; 
+                                                    background: rgb(34, 35, 53) url('data:image/svg+xml;utf8,<svg fill=\'%23999\' height=\'24\' viewBox=\'0 0 24 24\' width=\'24\' xmlns=\'http://www.w3.org/2000/svg\'><path d=\'M7 10l5 5 5-5z\'/></svg>') no-repeat right 12px center;
+                                                    background-size: 16px 16px;
+                                                    appearance: none; 
+                                                    -webkit-appearance: none; 
+                                                    -moz-appearance: none; 
+                                                    width: 223px; 
+                                                    margin-left: -12px;
+                                                    margin-top: -1px;
+                                                    color: #ddd;">
+                                                    
+                                                    <option value="">Select Month</option>
+                                                    <option value="1">January</option>
+                                                    <option value="2">February</option>
+                                                    <option value="3">March</option>
+                                                    <option value="4">April</option>
+                                                    <option value="5">May</option>
+                                                    <option value="6">June</option>
+                                                    <option value="7">July</option>
+                                                    <option value="8">August</option>
+                                                    <option value="9">September</option>
+                                                    <option value="10">October</option>
+                                                    <option value="11">November</option>
+                                                    <option value="12">December</option>
+                                                </select>
+                                            </div>
+                                    
+                                            <!-- Clear Filters Button -->
+                                            <button type="button" onclick="clearEmployeeFilter()" 
+                                                    style="background: rgb(185, 185, 185); 
+                                                           border: 1px solid #ddd; 
+                                                           padding: 10px 15px; 
+                                                           color: rgb(49, 49, 49);
+                                                           cursor: pointer; 
+                                                           font-size: inherit; 
+                                                           margin-left: 8px;
+                                                           transition: all 0.2s; 
+                                                           border-radius: 8px; 
+                                                           border: none;
+                                                           height: 39px; 
+                                                           line-height: 20px;">
+                                              Clear Filters
+                                            </button>
+                                          </form>
+                                      </div>
+                                    </div>
+                                  </div>
+                            </div>
+                        </div>
+                        <div class="main-nav-end">
+                            <button class="sidebar-toggle transparent-btn" title="Menu" type="button">
+                                <span class="sr-only">Toggle menu</span>
+                                <span class="icon menu-toggle--gray" aria-hidden="true"></span>
+                            </button>    
+                            <button class="theme-switcher gray-circle-btn" type="button" title="Switch theme">
+                                <span class="sr-only">Switch theme</span>
+                                <i class="sun-icon" data-feather="sun" aria-hidden="true"></i>
+                                <i class="moon-icon" data-feather="moon" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                </nav>
+                <!-- ! Main nav -->    
+                <!-- Animated Background -->
+                <div class="animated-background">
+                    <div class="circle circle1"></div>
+                    <div class="circle circle2"></div>
+                    <div class="circle circle3"></div>
+                    <div class="circle circle4"></div>
+                </div>
+                <div class="container">
+                    <div class="table-container fade-in">
+                        <h2 class="text-center">Schedule Details</h2>
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Sl. No:</th>
+                                    <th>Bus Name</th>
+                                    <th>Route (Source → Destination)</th>
+                                    <th>Departure Time</th>
+                                    <th>Arrival Time</th>
+                                </tr>
+                            </thead>
+                            <tbody id="submissionTable">
+                                {% for schedule in schedules %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    
+                                    
+                                    <td>
+                                        {% if schedule.bus %}
+                                            {{ schedule.bus.bus_name }}
+                                        {% else %}
+                                            No Bus Assigned
+                                        {% endif %}
+                                    </td>
+                                    
+                                    <td>
+                                        {% if schedule.route %}
+                                            {{ schedule.route.source }} → {{ schedule.route.destination }}
+                                        {% else %}
+                                            No Route Assigned
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ schedule.departure_time }}</td>
+                                    <td>{{ schedule.arrival_time }}</td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="7">No schedules available.</td>
+                                </tr>
+                                {% endfor %}
+                                <tr id="noResultsRow" style="display: none;">
+                                    <td colspan="6" class="text-center text-muted">No results found.</td>
+                                </tr>  
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Show table rows with animation
+        $('#submissionTable tr').each(function(index) {
+            $(this).delay(index * 200).queue(function(next) {
+                $(this).addClass('show');
+                next();
+            });
+        });
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Animation for table rows on page load
+        const rows = document.querySelectorAll(".table tbody tr");
+        rows.forEach((row, index) => {
+            setTimeout(() => {
+                row.style.opacity = "1";
+                row.style.transform = "translateY(0)";
+            }, index * 100);
+        });
+        
+        // Table filtering functionality
+        document.querySelector('form').addEventListener('input', filterTable);
+        document.querySelector('form').addEventListener('change', filterTable); // To handle select inputs
+        
+        function parseDateWithMonthNames(dateStr) {
+            if (!dateStr) return null;
+            
+            // Handle month name abbreviations with periods
+            const monthMap = {
+                'jan.': '01', 'jan': '01', 'january': '01',
+                'feb.': '02', 'feb': '02', 'february': '02',
+                'mar.': '03', 'mar': '03', 'march': '03',
+                'apr.': '04', 'apr': '04', 'april': '04',
+                'may.': '05', 'may': '05',
+                'jun.': '06', 'jun': '06', 'june': '06',
+                'jul.': '07', 'jul': '07', 'july': '07',
+                'aug.': '08', 'aug': '08', 'august': '08',
+                'sep.': '09', 'sep': '09', 'sept.': '09', 'september': '09',
+                'oct.': '10', 'oct': '10', 'october': '10',
+                'nov.': '11', 'nov': '11', 'november': '11',
+                'dec.': '12', 'dec': '12', 'december': '12'
+            };
+            
+            // Convert to lowercase for easier matching
+            const lowerDateStr = dateStr.toLowerCase();
+            
+            // Check for month names in the string
+            for (const monthName in monthMap) {
+                if (lowerDateStr.includes(monthName)) {
+                    // Extract the date components
+                    const dayMatch = lowerDateStr.match(/\d+(?=,|\s)/);
+                    const yearMatch = lowerDateStr.match(/\d{4}/);
+                    
+                    if (dayMatch && yearMatch) {
+                        const day = dayMatch[0].padStart(2, '0');
+                        const month = monthMap[monthName];
+                        const year = yearMatch[0];
+                        
+                        // Construct date string in YYYY-MM-DD format for reliable parsing
+                        return new Date(`${year}-${month}-${day}`);
+                    }
+                }
+            }
+            
+            // If no month name was found, try direct parsing
+            return new Date(dateStr);
+        }
+        
+        function filterTable() {
+            const keyword = document.querySelector('input[name="keywords"]').value.toLowerCase();
+            const monthInput = document.querySelector('select[name="time_period"]').value;
+            const statusInput = document.querySelector('select[name="status"]')?.value || '';
+            
+            const rows = document.querySelectorAll('table tbody tr');
+            let visibleCount = 0;
+            
+            rows.forEach(row => {
+                if (row.id === 'noResultsRow') return;
+                
+                // Adjust these indices based on your actual table structure
+                const nameCell = row.cells[2]?.textContent || '';                // Bus Name
+                const routeCell = row.cells[3]?.textContent || '';              // Route
+                const departureDateCell = row.cells[4]?.textContent || '';      // Departure Time
+                const arrivalDateCell = row.cells[5]?.textContent || '';        // Arrival Time
+                
+                // Combine all text for keyword search
+                const allText = (nameCell + ' ' + routeCell + ' ' + departureDateCell + ' ' + arrivalDateCell).toLowerCase();
+                
+                let show = true;
+                
+                // Keyword filter
+                if (keyword && !allText.includes(keyword)) {
+                    show = false;
+                }
+                
+                // Month filter
+                if (monthInput && show) {
+                    const departureDate = parseDateWithMonthNames(departureDateCell);
+                    
+                    if (departureDate && !isNaN(departureDate.getTime())) {
+                        const rowMonth = departureDate.getMonth() + 1;
+                        if (rowMonth !== parseInt(monthInput)) {
+                            show = false;
+                        }
+                    } else {
+                        // If date parsing failed, hide the row when month filter is active
+                        show = false;
+                    }
+                }
+                
+                // Status filter (if your table has status column)
+                if (statusInput && show) {
+                    const statusCell = row.cells[6]?.textContent.toLowerCase() || '';
+                    if (statusInput === '1' && statusCell !== 'absent') {
+                        show = false;
+                    } else if (statusInput === '2' && statusCell !== 'present') {
+                        show = false;
+                    }
+                }
+                
+                row.style.display = show ? '' : 'none';
+                if (show) visibleCount++;
+            });
+            
+            const noResultsRow = document.getElementById('noResultsRow');
+            if (noResultsRow) {
+                noResultsRow.style.display = visibleCount === 0 ? '' : 'none';
+            }
+        }
+        
+        function clearEmployeeFilter() {
+            document.querySelector('input[name="keywords"]').value = '';
+            document.querySelector('select[name="time_period"]').value = '';
+            if (document.querySelector('select[name="status"]')) {
+                document.querySelector('select[name="status"]').value = '';
+            }
+            filterTable();
+        }
+        
+        window.clearEmployeeFilter = clearEmployeeFilter;
+        
+        // Initialize filtering on page load
+        filterTable();
+    });
+    
+    // jQuery for table row animation
+    $(document).ready(function() {
+        // Show table rows with animation
+        $('#submissionTable tr').each(function(index) {
+            $(this).delay(index * 200).queue(function(next) {
+                $(this).addClass('show');
+                next();
+            });
+        });
+    });
+    </script>
+    
+      
+        
+    
+
+<!-- Chart library -->
+<script src="{% static 'management_dash/plugins/chart.min.js'%}"></script>
+<!-- Icons library -->
+<script src="{% static 'management_dash/plugins/feather.min.js'%}"></script>
+<!-- Custom scripts -->
+<script src="{% static 'management_dash/js/script.js'%}"></script>
+</body>
+</body>
+</html>

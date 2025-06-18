@@ -1,0 +1,31 @@
+{% if search_results.bus_owners or search_results.passengers or search_results.employees %}
+    {% if search_results.bus_owners %}
+        <div style="font-family: 'Funnel Display', sans-serif; font-size: 16px; color: #fff; line-height: 1.6; margin-left: 12px;">
+            <ul class="list-unstyled">
+                {% for owner in search_results.bus_owners %}
+                    <li>Bus Owner: {{ owner.name }} - {{ owner.email }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    {% if search_results.passengers %}
+        <div cstyle="font-family: 'Funnel Display', sans-serif; font-size: 16px; color: #fff; line-height: 1.6; margin-left: 12px;">
+            <ul class="list-unstyled">
+                {% for passenger in search_results.passengers %}
+                    <li>Passenger: {{ passenger.name }} - {{ passenger.email }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+    {% if search_results.employees %}
+        <div style="font-family: 'Funnel Display', sans-serif; font-size: 16px; color: #fff; line-height: 1.6; margin-left: 12px;">
+            <ul class="list-unstyled">
+                {% for employee in search_results.employees %}
+                    <li>Employee: {{ employee.name }} ({{ employee.role }}) - {{ employee.email }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+{% else %}
+    <p style="font-family: 'Funnel Display', sans-serif; font-size: 16px; color: #fff; line-height: 1.6; margin-left: 12px;" class="no-results">No results found.</p>
+{% endif %}

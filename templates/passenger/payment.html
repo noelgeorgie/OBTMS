@@ -1,0 +1,255 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>User Dashboard</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Travelix Project">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- CSS Links -->
+    <link rel="stylesheet" type="text/css" href="{% static 'pass/styles/bootstrap4/bootstrap.min.css'%}">
+    <link rel="stylesheet" href="{% static 'pass/plugins/font-awesome-4.7.0/css/font-awesome.min.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'pass/styles/elements_styles.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'pass/styles/elements_responsive.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'pass/plugins/OwlCarousel2-2.2.1/owl.carousel.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'pass/plugins/OwlCarousel2-2.2.1/owl.theme.default.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'pass/plugins/OwlCarousel2-2.2.1/animate.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'pass/styles/main_styles.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'pass/styles/responsive.css'%}">
+    
+    
+    <style>
+        body {
+        margin: 0;
+        padding: 0;
+        background-color: #f0f8ff;
+        overflow-y: auto; /* Enable vertical scrollbar if needed */
+        }
+        .home_slider_container {
+            height: 700vh; /* Increased height */
+        }
+        .home_slider_background {
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+        }
+        .home_slider_content {
+            position: relative;
+            z-index: 1;
+            color: white;
+        }    
+        .text-center {
+            text-align: center;
+            
+        }
+		.animated-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1; /* Send behind other content */
+        }
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 165, 0, 0.6);
+            animation: float 6s infinite ease-in-out;
+        }
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0); }
+        }
+        .circle1 { width: 100px; height: 100px; top: 20%; left: 10%; animation-duration: 4s; }
+        .circle2 { width: 150px; height: 150px; top: 30%; left: 70%; animation-duration: 5s; }
+        .circle3 { width: 80px; height: 80px; top: 70%; left: 40%; animation-duration: 6s; }
+        .circle4 { width: 120px; height: 120px; top: 50%; left: 80%; animation-duration: 3s; }
+        .table-container {
+            position: relative;
+            margin: 200px auto; /* Adjust as needed */
+            padding: 20px;
+            background: rgba(209, 213, 223, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            z-index: 1; /* Ensure this is above the background */
+            overflow-y: auto; /* Add scrollbar to the table container if content overflows */
+            max-height: 70vh; /* Limit height and allow scrolling within this section */
+        }
+		.text-center {
+            color: #333; /* Dark grey color */
+        }
+        .super_container {
+            min-height: 100vh; /* Ensure it occupies at least full viewport height */
+            display: flex;
+            flex-direction: column;
+        }
+        /* Booking Details Section */
+        .card-title {
+            color: #1d3557; /* Dark Blue */
+        }
+
+        .card p {
+            color: #2c3e50; /* Dark Grey-Blue */
+            font-weight: 500;
+        }
+
+        /* Strong (Bold) Text */
+        .card p strong {
+            color:rgb(49, 57, 65); /* Red for highlighting important details */
+        }
+
+        /* Muted Text */
+        .text-muted {
+            color: #6c757d; /* Grey */
+        }
+        .confirmation-section .card {
+            border-width: 1px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .confirmation-section .card:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        
+    </style>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+</head>
+<body style="background-color: #f8f9fa;">
+    <div class="super_container">
+
+        
+
+        <!-- Home -->
+        <div class="home">
+            <!-- Home Slider -->
+            <div class="home_slider_container">
+                
+                    <!-- Slider Item 1 -->
+                    
+                
+                    <div class="container">
+                        <div class="table-container fade-in">
+                            <h2 class="text-center mb-4">Payment Information</h2>
+                            <div class="row">
+                                <!-- Left: Booking Details -->
+                                <div class="col-md-6">
+                                    <div class="card p-4">
+                                        <h4 class="card-title text-center fw-semibold">Booking Details</h4>
+                    
+                                        <!-- Bus Details -->
+                                        <p><strong>Bus Name:</strong> {{ bus.bus_name }}</p>
+                    
+                                        <!-- Schedule Details -->
+                                        <p><strong>Departure Time:</strong> {{ schedule.departure_time }}</p>
+                                        <p><strong>Arrival Time:</strong> {{ schedule.arrival_time }}</p>
+                    
+                                        <!-- Display the Fare Rate and Distance -->
+                                        <p><strong>Distance:</strong> {{ distance }} km</p>
+                    
+                                        <!-- Selected Seats -->
+                                        <p><strong>Selected Seats:</strong> {{ selected_seats|join:", " }}</p>
+                    
+                                        <!-- Total Fare -->
+                                        <p><strong>Total Fare:</strong> ₹{{ total_fare }}</p>
+                                    </div>
+                                </div>
+                    
+                                <!-- Right: Boarding and Dropping Points Form -->
+                                <div class="col-md-6">
+                                    <div class="card p-4">
+                                        <h4 class="card-title text-center fw-semibold">Boarding & Dropping Points</h4>
+                                        
+                                        <!-- MAIN FORM - Single form for the entire payment process -->
+                                        <form method="post" action="{% url 'details' %}" id="paymentForm" class="mt-3">
+                                            {% csrf_token %}
+                                            
+                                            <!-- Boarding Point Section -->
+                                            <div class="mb-4">
+                                                <p><strong>Boarding Point:</strong> {{ route.source }}</p>
+                                                <strong class="text-muted">Please arrive 30 minutes before departure time</strong>
+                                            </div>
+                                            
+                                            <!-- Dropping Point Section -->
+                                            <div class="mb-4">
+                                                <p><strong>Dropping Point:</strong> {{ route.destination }}</p>
+                                            </div>
+                                            
+                                            <!-- Hidden fields to store values for form submission -->
+                                            <input type="hidden" name="boarding_point" value="{{ route.source }}">
+                                            <input type="hidden" name="dropping_point" value="{{ route.destination }}">
+                                            
+                                            <!-- Confirmation Checkbox -->
+                                            <div class="confirmation-section mb-4">
+                                                <div class="card-body">
+                                                    <div class="form-check d-flex align-items-center">
+                                                        <input class="form-check-input me-2" type="checkbox" id="confirmCheckbox" required 
+                                                               style="width: 1.2rem; height: 1.2rem;">
+                                                        <label class="form-check-label fw-medium" for="confirmCheckbox">
+                                                            I confirm that the boarding and dropping points are correct
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <hr>
+                                            
+                                            <!-- Important Notes -->
+                                            <div class="alert alert-info mb-3" role="alert">
+                                                <strong>Important:</strong> Please be at your boarding point 30 minutes before departure time. The bus will not wait for late passengers.
+                                            </div>
+                    
+                                            <div class="alert alert-info mb-3" role="alert">
+                                                Please confirm your booking and proceed with the payment. If you wish to cancel, you can do so below.
+                                            </div>
+                                            
+                                            <!-- Payment Buttons -->
+                                            <div class="d-flex justify-content-between">
+                                                <button type="submit" class="btn btn-success" id="confirmPaymentBtn" disabled>Confirm Payment</button>
+                                                <a href="{% url 'passenger_dashboard' %}" class="btn btn-secondary">Cancel Booking</a>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <script>
+                        // Simple script to handle checkbox and button
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const confirmCheckbox = document.getElementById('confirmCheckbox');
+                            const confirmBtn = document.getElementById('confirmPaymentBtn');
+                            
+                            // Set initial state
+                            confirmBtn.disabled = true;
+                            
+                            // Toggle button state based on checkbox
+                            confirmCheckbox.addEventListener('change', function() {
+                                confirmBtn.disabled = !this.checked;
+                            });
+                        });
+                    </script>
+                
+            </div>
+        </div>
+    </div>
+
+
+   
+
+    <!-- Optional Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

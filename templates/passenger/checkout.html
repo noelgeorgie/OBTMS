@@ -1,0 +1,189 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- Title -->
+    <title>Checkout</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap" rel="stylesheet">
+    
+    <!-- Static Files -->
+    <link rel="stylesheet" href="{% static 'order/assets/css/all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'order/assets/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'order/assets/css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'order/assets/css/responsive.css' %}">
+    
+    <style>
+        .checkout-section {
+            padding: 80px 0;
+        }
+        .order-details {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        .order-summary-table {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .order-summary-table th, 
+        .order-summary-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        .order-total {
+            font-size: 20px;
+            font-weight: 700;
+            margin-top: 20px;
+            text-align: right;
+        }
+        .booking-details {
+            margin-bottom: 30px;
+        }
+        .payment-options {
+            margin-top: 30px;
+        }
+        .submit-btn {
+            background-color: #F28123;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 20px;
+        }
+        .submit-btn:hover {
+            background-color: #051922;
+        }
+    </style>
+</head>
+<body>
+    <!-- PreLoader -->
+    <div class="loader">
+        <div class="loader-inner">
+            <div class="circle"></div>
+        </div>
+    </div>
+    <!-- PreLoader Ends -->
+    
+    <!-- Breadcrumb Section -->
+    <div class="breadcrumb-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2 text-center">
+                    <div class="breadcrumb-text">
+                        <h1>Checkout</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Breadcrumb Section -->
+    
+    <!-- Checkout Section -->
+    <div class="checkout-section mt-150 mb-150">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="booking-details">
+                        <h3>Booking Details</h3>
+                        <div class="card">
+                            <div class="card-body">
+                                <p><strong>Booking ID:</strong> {{ booking.booking_id }}</p>
+                                <p><strong>Passenger:</strong> {{ booking.passenger_id }}</p>
+                                 
+                                
+                                 
+                                <!-- Add more booking details as needed -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="order-details">
+                        <h3>Order Summary</h3>
+                        <table class="order-summary-table">
+                            <thead>
+                                <tr>
+                                    <th>Item</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cart-items">
+                                {% for item in cart_items %}
+                                <tr>
+                                    <td>{{ item.name }}</td>
+                                    <td class="price">₹{{ item.price }}</td>
+                                    <td class="quantity">{{ item.quantity }}</td>
+                                    <td class="subtotal">₹0</td> <!-- JavaScript will update this -->
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        <div class="order-total">
+                            <p>Total: <span id="total-price">₹{{ total_price }}</span></p>
+                        </div>
+                        <button type="button" class="submit-btn" style="display: block; margin-left: 570px;" onclick="window.location.href='{% url 'passenger_dashboard'%}'">Cancel Order</button>
+
+
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="mb-4">Confirm Order</h3>
+                            
+                            <form action="{% url 'checkout' %}" method="post" id="checkout-form">
+                                {% csrf_token %}
+                                <input type="hidden" name="booking_id" value="{{ booking.booking_id }}">
+                                <input type="hidden" name="total_amount" id="total-amount">
+                                <input type="hidden" name="cart_data" id="cart-data">
+                            
+                                <button type="submit" class="submit-btn">Place Order</button>
+                            </form> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Checkout Section -->
+    
+    <!-- jQuery and Bootstrap -->
+    <script src="{% static 'order/assets/js/jquery-1.11.3.min.js' %}"></script>
+    <script src="{% static 'order/assets/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'order/assets/js/main.js' %}"></script>
+    
+    <!-- JavaScript to Calculate Subtotal -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let totalPrice = 0;
+            let cartItems = document.querySelectorAll("#cart-items tr");
+            cartItems.forEach(row => {
+                let price = parseFloat(row.querySelector(".price").textContent.replace("₹", ""));
+                let quantity = parseInt(row.querySelector(".quantity").textContent);
+                let subtotal = price * quantity;
+                row.querySelector(".subtotal").textContent = "₹" + subtotal.toFixed(2);
+                totalPrice += subtotal;
+            });
+
+            // Update total price
+            document.getElementById("total-price").textContent = "₹" + totalPrice.toFixed(2);
+            document.getElementById("total-amount").value = totalPrice.toFixed(2);
+        });
+    </script>
+</body>
+</html>

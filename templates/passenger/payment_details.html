@@ -1,0 +1,721 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>User Dashboard</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Travelix Project">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+    <!-- CSS Links -->
+    <link rel="stylesheet" type="text/css" href="{% static 'pass/styles/bootstrap4/bootstrap.min.css'%}">
+    <link rel="stylesheet" href="{% static 'pass/plugins/font-awesome-4.7.0/css/font-awesome.min.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'pass/styles/elements_styles.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'pass/styles/elements_responsive.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'pass/plugins/OwlCarousel2-2.2.1/owl.carousel.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'pass/plugins/OwlCarousel2-2.2.1/owl.theme.default.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'pass/plugins/OwlCarousel2-2.2.1/animate.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'pass/styles/main_styles.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'pass/styles/responsive.css'%}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #e9ecef;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f8ff;
+            overflow-y: auto; /* Enable vertical scrollbar if needed */
+        }
+      
+        .tab-content {
+            margin-top: 20px;
+        }
+        .fare-summary {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        .fare-summary h5 {
+            margin-bottom: 20px;
+            color: #d32f2f;
+        }
+        .fare-summary table {
+            width: 100%;
+        }
+        .route-svg {
+            margin-top: 20px;
+        }
+        .btn-primary {
+            background-color: #d32f2f;
+            border-color: #d32f2f;
+        }
+        .btn-primary:hover {
+            background-color: #b71c1c;
+            border-color: #b71c1c;
+        }
+        .step-header {
+            background-color: #fbe9e7;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        .step-header h6 {
+            margin: 0;
+            color: #d32f2f;
+        }
+        .nav-tabs .nav-link.active {
+            background-color: #d32f2f;
+            color: #fff;
+        }
+        .card {
+            border: none;
+        }
+   
+        .seat-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+            .seat {
+                width: 50px;
+                height: 50px;
+                border-radius: 4px;
+                text-align: center;
+                line-height: 45px;
+                background-image: url("{% static 'pass/images/car-seat.png' %}");
+                background-size: cover;
+                font-weight: bold;
+                background-color: #fff;
+                cursor: pointer;
+            }
+        .seat.selected {
+            background-color: #d32f2f;
+            color: #fff;
+        }
+        .home_slider_container {
+            height: 700vh; /* Increased height */
+        }
+        .home_slider_background {
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+        }
+        .home_slider_content {
+            position: relative;
+            z-index: 1;
+            color: white;
+        }    
+        .text-center {
+            text-align: center;
+            
+        }
+		.animated-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1; /* Send behind other content */
+        }
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 165, 0, 0.6);
+            animation: float 6s infinite ease-in-out;
+        }
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0); }
+        }
+        .circle1 { width: 100px; height: 100px; top: 20%; left: 10%; animation-duration: 4s; }
+        .circle2 { width: 150px; height: 150px; top: 30%; left: 70%; animation-duration: 5s; }
+        .circle3 { width: 80px; height: 80px; top: 70%; left: 40%; animation-duration: 6s; }
+        .circle4 { width: 120px; height: 120px; top: 50%; left: 80%; animation-duration: 3s; }
+        
+        .table-container {
+            position: relative;
+            margin: 200px auto; /* Adjust as needed */
+            padding: 20px;
+            background: rgba(209, 213, 223, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            z-index: 1; /* Ensure this is above the background */
+            overflow-y: auto; /* Add scrollbar to the table container if content overflows */
+            max-height: 70vh; /* Limit height and allow scrolling within this section */
+        }
+		.text-center {
+            color: #333; /* Dark grey color */
+        }
+        .super_container {
+            min-height: 100vh; /* Ensure it occupies at least full viewport height */
+            display: flex;
+            flex-direction: column;
+        }
+        /* Booking Details Section */
+        .card-title {
+            color: #1d3557; /* Dark Blue */
+        }
+
+        .card p {
+            color: #2c3e50; /* Dark Grey-Blue */
+            font-weight: 500;
+        }
+
+        /* Strong (Bold) Text */
+        .card p strong {
+            color:rgb(49, 57, 65); /* Red for highlighting important details */
+        }
+
+        /* Muted Text */
+        .text-muted {
+            color: #6c757d; /* Grey */
+        }
+        .payment-details {
+            display: none; /* Hide payment details by default */
+        }
+        .payment-details.show {
+            display: block; /* Show payment details when needed */
+        }
+        .error {
+            color: red;
+            font-size: 0.9em;
+        }
+        input[type="text"] {
+            width: 100%; /* Full width for input fields */
+            padding: 10px; /* Padding for better touch target */
+            border: 1px solid #ced4da; /* Light border */
+            border-radius: 4px; /* Rounded corners */
+            font-size: 16px; /* Font size for readability */
+            transition: border-color 0.3s; /* Smooth border color transition */
+        }
+        input[type="text"]:focus {
+            border-color: #80bdff; /* Change border color on focus */
+            outline: none; /* Remove default outline */
+        }
+        .custom-datetime {
+            width: 100%; /* Full width for input field */
+            padding: 12px; /* More padding for a better touch target */
+            border: 0px solid #007bff; /* Distinct border color */
+            border-radius: 6px; /* Slightly more rounded corners */
+            font-size: 16px; /* Font size for readability */
+            background-color: #f8f9fa; /* Light background color */
+            transition: border-color 0.3s, background-color 0.3s; /* Smooth transitions */
+        }
+
+        /* Change border color on focus */
+        .custom-datetime:focus {
+            border-color: #0056b3; /* Darker border color on focus */
+            background-color: #ffffff; /* Change background color on focus */
+            outline: none; /* Remove default outline */
+        }
+    </style>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+</head>
+<body>
+    <body style="background-color: #f8f9fa;">
+        <div class="super_container">
+    
+            <!-- Header -->
+            <header class="header">
+                <!-- Top Bar -->
+                <div class="top_bar">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col d-flex flex-row">
+                                <div class="phone">+91 9897654387</div>
+                                <div class="social">
+                                    <ul class="social_list">
+                                        <li class="social_list_item"><a href="#"><i class="fab fa-pinterest" aria-hidden="true"></i></a></li>
+                                        <li class="social_list_item"><a href=""><i class="fab fa-facebook" aria-hidden="true"></i></a></li>
+                                        <li class="social_list_item"><a href=""><i class="fab fa-twitter" aria-hidden="true"></i></a></li>
+                                        <li class="social_list_item"><a href=""><i class="fab fa-dribbble" aria-hidden="true"></i></a></li>
+                                        <li class="social_list_item"><a href=""><i class="fab fa-behance" aria-hidden="true"></i></a></li>
+                                        <li class="social_list_item"><a href=""><i class="fab fa-linkedin" aria-hidden="true"></i></a></li>
+                                    </ul>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>		
+                </div>
+                <!-- Main Navigation -->
+                <nav class="main_nav">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col main_nav_col d-flex flex-row align-items-center justify-content-start">
+                                <div class="logo_container">
+                                    <div class="logo"><a href="#"><img src="{% static 'pass/images/logo.png'%}" alt="">travelix</a></div>
+                                </div>
+                                <div class="main_nav_container ml-auto">
+                                    <ul class="main_nav_list">
+                                      <li class="main_nav_item"><a href="{% url 'passenger_dashboard' %}">home</a></li>
+                                      <li class="main_nav_item"><a href="{% url 'passenger_about' %}">about us</a></li>
+                                      <li class="main_nav_item"><a href="{% url 'passenger_offers' %}">offers</a></li>
+                                      <li class="main_nav_item"><a href="{% url 'passenger_blog' %}">news</a></li>
+                                      <li class="main_nav_item"><a href="{% url 'passenger_contact' %}">contact</a></li>
+                                    </ul>
+                                </div>
+                                <div class="content_search ml-lg-0 ml-auto">
+                                    <form id="search_form" class="search_form bez_1">
+                                        <input type="search" class="search_content_input bez_1">
+                                    </form>
+                                    <div class="hamburger">
+                                        <i class="fa fa-bars trans_200"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </header>
+    
+            <!-- Home -->
+            <div class="home">
+                <!-- Home Slider -->
+                <div class="home_slider_container">
+                    <div class="owl-carousel home_slider owl-theme">
+                        <!-- Slider Item 1 -->
+                        <div class="home_slider_item">
+                            <div class="home_slider_background" style="background-image:url({% static 'pass/images/home_slider.jpg'%})"></div>
+                            <div class="home_slider_content text-center">
+                                <div class="home_slider_content_inner">
+                                    <h1>discover</h1>
+                                    <h1>the world with us</h1>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Additional Slider Items -->
+                        <div class="home_slider_item">
+                            <div class="home_slider_background" style="background-image:url({% static 'pass/images/home_slider.jpg'%})"></div>
+                            <div class="home_slider_content text-center">
+                                <div class="home_slider_content_inner">
+                                    <h1>discover</h1>
+                                    <h1>the world through us</h1>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="home_slider_item">
+                            <div class="home_slider_background" style="background-image:url({% static 'pass/images/home_slider.jpg'%})"></div>
+                            <div class="home_slider_content text-center">
+                                <div class="home_slider_content_inner">
+                                    <h1>discover</h1>
+                                    <h1>the world around us</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="animated-background">
+                        <div class="circle circle1"></div>
+                        <div class="circle circle2"></div>
+                        <div class="circle circle3"></div>
+                        <div class="circle circle4"></div>
+                    </div>
+                    
+                    <div class="container">
+                        <div class="table-container fade-in">
+                            <h2 class="text-center mb-4">Enter Travel Deatils</h2>
+                            <div class="container mt-4">
+                                <div class="row">
+                                    <div class="container">
+                                        <div class="row">
+                                            <!-- Left Side: Booking Form -->
+                                            <div class="col-lg-8">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <ul class="nav nav-tabs card-header-tabs" id="bookingTabs" role="tablist">
+                                                            <li class="nav-item">
+                                                                <a class="nav-link active" id="traveller-tab" data-bs-toggle="tab" href="#traveller" role="tab">1. Traveller Details</a>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <a class="nav-link" id="payee-tab" data-bs-toggle="tab" href="#payee" role="tab">2. Payee Details</a>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <a class="nav-link" id="payment-tab" data-bs-toggle="tab" href="#payment" role="tab">3. Payment Details</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <div class="tab-content" id="bookingTabsContent">
+                                                            <!-- Traveller Details Tab -->
+                                                            <div class="tab-pane fade show active" id="traveller" role="tabpanel">
+                                                                <form id="traveller-form">
+                                                                    {% csrf_token %}
+                                                                    <input type="hidden" name="booking_id" value="{{ booking_id }}">
+                                                                    {% for seat in selected_seats %}
+                                                                    <div class="d-flex align-items-center gap-3 mb-3">
+                                                                        <div class="seat-container">
+                                                                            <div class="seat">{{ seat }}</div>
+                                                                        </div>
+                                                                        <input type="hidden" name="seat_numbers[]" value="{{ seat }}">
+                                                                        <input type="text" class="form-control" name="passenger_names[]" placeholder="Name of Passenger" pattern="^[A-Za-z\s]+$" title="Only alphabetic characters and spaces are allowed" required>
+                                                                        <input type="number" class="form-control" name="passenger_ages[]" placeholder="Age"  pattern="[1-9][0-9]?" min="1" max="90" title="Enter a valid age between 1 and 90" required>
+                                                                        <select class="form-select" name="passenger_genders[]" required>
+                                                                            <option value="">Select Gender</option>
+                                                                            <option value="Male">Male</option>
+                                                                            <option value="Female">Female</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    {% endfor %}
+                                                                    <button type="submit" class="btn btn-primary w-100 mt-3">Proceed to Payee Details</button>
+                                                                </form>
+                                                            </div>
+                                                
+                                                            <!-- Payee Details Tab -->
+                                                            <div class="tab-pane fade" id="payee" role="tabpanel">
+                                                                <form id="payee-form">
+                                                                    {% csrf_token %}
+                                                                    <div class="row mb-3">
+                                                                        <div class="col-md-6">
+                                                                            <label for="mobile" class="form-label">Mobile Number</label>
+                                                                            <div class="input-group">
+                                                                                <span class="input-group-text">+91</span>
+                                                                                <input type="text" class="form-control" name="mobile" pattern="[0-9]{10}" placeholder="Enter mobile number" required>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <label for="email" class="form-label">Email Address</label>
+                                                                            <input type="email" class="form-control" name="email" placeholder="Enter email" required>
+                                                                        </div>
+                                                                    </div>
+                                                                    <button type="submit" class="btn btn-primary w-100 mt-3">Proceed to Payment Details</button>
+                                                                </form>
+                                                            </div>
+                                                
+                                                            <!-- Payment Details Tab -->
+                                                            <div class="tab-pane fade" id="payment" role="tabpanel">
+                                                                <form id="payment-form">
+                                                                    {% csrf_token %}
+                                                                    <div class="booking-summary mb-4">
+                                                                        <h6>Booking Summary</h6>
+                                                                        <div id="traveller_details_summary"></div>
+                                                                        <div id="payee_details_summary"></div>
+                                                                    </div>
+                                                                    <div class="form-group mb-3">
+                                                                        <label>Total Fare: ₹{{ total_fare }}</label>
+                                                                    </div>
+                                                                    <div class="form-group mb-3">
+                                                                        <label for="payment_method">Payment Method:</label>
+                                                                        <select name="payment_method" id="payment_method" class="form-control" required>
+                                                                            <option value="Pay Later">Pay Later</option>
+                                                                            <option value="Credit Card">Credit Card</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div id="credit_card_details" class="payment-details mb-3" style="display: none;">
+                                                                        <div class="mb-3">
+                                                                            <label for="credit_card_number">Credit Card Number:</label>
+                                                                            <input type="text" class="form-control" id="credit_card_number" name="credit_card_number" pattern="[0-9]{16}" placeholder="Enter your credit card number">
+                                                                        </div>
+                                                                        <div class="mb-3">
+                                                                            <label for="expiry_date">Expiry Date:</label>
+                                                                            <input type="text" class="form-control" id="expiry_date" name="expiry_date" pattern="(0[1-9]|1[0-2])\/([0-9]{2})" placeholder="MM/YY">
+                                                                        </div>
+                                                                        <div class="mb-3">
+                                                                            <label>CVV:</label>
+                                                                            <input type="text" class="form-control" name="cvv" pattern="[0-9]{3}" placeholder="Enter CVV Number">
+                                                                        </div>
+                                                                    </div>
+                                                                    <button type="submit" class="btn btn-primary w-100 mt-3">Confirm Payment</button>
+                                                                    <br><br>
+                                                                    <div class="d-flex flex-column align-items-center text-center">
+                                                                        <div class="form-check">
+                                                                            <input class="form-check-input" type="checkbox" id="agreeCheckbox" required>
+                                                                            <label class="form-check-label" for="agreeCheckbox">
+                                                                                I agree to the cancellation policy
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                </form>                                                                
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                    
+                                            <!-- Right Side: Fare Summary and Route SVG -->
+                                            <div class="col-lg-4">
+                                                <div class="fare-summary card p-3">
+                                                    <h5>Cancellation Policy</h5>
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Time Before Trip Start</th>
+                                                                <th>Cancellation</th>
+                                                                <th>Refund</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>Before 72 HRS</td>
+                                                                <td>0%</td>
+                                                                <td>Full Refund*</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>48 HRS - 72 HRS</td>
+                                                                <td>10%</td>
+                                                                <td>90%</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>24 HRS - 48 HRS</td>
+                                                                <td>20%</td>
+                                                                <td>80%</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>12 HRS - 24 HRS</td>
+                                                                <td>30%</td>
+                                                                <td>70%</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>2 HRS - 12 HRS</td>
+                                                                <td>40%</td>
+                                                                <td>60%</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Within 2 HRS</td>
+                                                                <td>50%</td>
+                                                                <td>50%</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+
+                                                   
+
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                // Initialize booking data storage
+                let bookingData = {
+                    travellers: [],
+                    payee: {},
+                    payment: {}
+                };
+            
+                // Improved error handling function
+                function showError(message) {
+                    const errorMessage = message || 'An unexpected error occurred. Please try again.';
+                    alert(errorMessage); // You can replace this with a better UI feedback method
+                }
+            
+                // Function to switch tabs safely
+                function switchToTab(tabId) {
+                    const tab = new bootstrap.Tab($(`#bookingTabs a[href="#${tabId}"]`)[0]);
+                    tab.show();
+                }
+            
+                // Handle Traveller Form Submission
+                $('#traveller-form').on('submit', function(e) {
+                    e.preventDefault();
+                    
+                    // Create an array to store traveller information
+                    let travellerFormData = new FormData(this);
+                    
+                    $.ajax({
+                        url: '{% url "traveller_details" %}',
+                        type: 'POST',
+                        data: travellerFormData,
+                        processData: false,
+                        contentType: false,
+                        success: function(response) {
+                            if (response && response.success) {
+                                // Store data and move to next tab
+                                switchToTab('payee');
+                            } else {
+                                // Show specific error from server if available
+                                showError(response?.error || 'Failed to save traveller details');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Ajax error:', error);
+                            showError('Failed to process traveller details. Please try again.');
+                        }
+                    });
+                });
+            
+                // Handle Payee Form Submission
+                $('#payee-form').on('submit', function(e) {
+                    e.preventDefault();
+                    
+                    let payeeFormData = new FormData(this);
+                    
+                    $.ajax({
+                        url: '{% url "payee_details" %}',
+                        type: 'POST',
+                        data: payeeFormData,
+                        processData: false,
+                        contentType: false,
+                        success: function(response) {
+                            if (response && response.success) {
+                                // Update summary sections if they exist
+                                if (response.traveller_details_html) {
+                                    $('#traveller_details_summary').html(response.traveller_details_html);
+                                }
+                                if (response.payee_details_html) {
+                                    $('#payee_details_summary').html(response.payee_details_html);
+                                }
+                                switchToTab('payment');
+                            } else {
+                                showError(response?.error || 'Failed to save payee details');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Ajax error:', error);
+                            showError('Failed to process payee details. Please try again.');
+                        }
+                    });
+                });
+            
+                // Handle Payment Form Submission
+                $('#payment-form').on('submit', function(e) {
+                    e.preventDefault();
+                    
+                    let paymentFormData = new FormData(this);
+                    
+                    // Add payment method specific data
+                    if ($('#payment_method').val() === 'Credit Card') {
+                        paymentFormData.append('credit_card_number', $('#credit_card_number').val());
+                        paymentFormData.append('expiry_date', $('#expiry_date').val());
+                        paymentFormData.append('cvv', $('input[name="cvv"]').val());
+                    }
+            
+                    $.ajax({
+                        url: '{% url "process_booking_payment" %}',
+                        type: 'POST',
+                        data: paymentFormData,
+                        processData: false,
+                        contentType: false,
+                        success: function(response) {
+                            if (response && response.success) {
+                                // Redirect to success page
+                                window.location.href = response.redirect_url || '/payment/';
+                            } else {
+                                showError(response?.error || 'Payment processing failed');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Ajax error:', error);
+                            showError('Failed to process payment. Please try again.');
+                        }
+                    });
+                });
+            
+                // Handle payment method change
+                $('#payment_method').on('change', function() {
+                    const creditCardFields = $('#credit_card_details');
+                    if ($(this).val() === 'Credit Card') {
+                        creditCardFields.slideDown();
+                        creditCardFields.find('input').prop('required', true);
+                    } else {
+                        creditCardFields.slideUp();
+                        creditCardFields.find('input').prop('required', false);
+                    }
+                });
+            
+                // Prevent direct tab access before completion
+                $('#bookingTabs a[data-bs-toggle="tab"]').on('click', function(e) {
+                    e.preventDefault();
+                    const targetTab = $(this).attr('href').substring(1);
+                    
+                    // Only allow progression if previous steps are complete
+                    if (targetTab === 'payee' && !$('#traveller-form')[0].checkValidity()) {
+                        showError('Please complete all traveller details first');
+                        return false;
+                    }
+                    if (targetTab === 'payment' && !$('#payee-form')[0].checkValidity()) {
+                        showError('Please complete payee details first');
+                        return false;
+                    }
+                    
+                    // If validation passes, show the tab
+                    $(this).tab('show');
+                });
+            });
+        </script>
+        
+        <script>
+        success: function(response) {
+            if (response && response.success) {
+                // Redirect to success page
+                window.location.href = response.redirect_url || '/payment/';
+            } else {
+                showError(response?.error || 'Payment processing failed');
+            }
+        }
+    </script>
+        <script>
+            // Handle the response from the server
+            $(document).ready(function () {
+                // Check if there's a message from the backend
+                {% if success %}
+                    let successMessage = '{{ success_message }}';
+                    let errorMessage = '{{ error_message }}';
+                    let redirectUrl = '{{ redirect_url }}';
+        
+                    if (successMessage) {
+                        // Show success alert and redirect
+                        alert(successMessage);
+                        window.location.href = redirectUrl;
+                    } else if (errorMessage) {
+                        // Show error alert and redirect
+                        alert(errorMessage);
+                        window.location.href = redirectUrl;
+                    }
+                {% endif %}
+            });
+        </script>
+
+           
+{% comment %} #------------------------------------------------------------------------------------------------------------------------ {% endcomment %}
+
+       
+
+
+
+    <script>
+        function handlePaymentMethodChange() {
+            var paymentMethod = document.getElementById('payment_method').value;
+            if (paymentMethod === 'Credit Card') {
+                document.getElementById('credit_card_details').style.display = 'block';
+            } else {
+                document.getElementById('credit_card_details').style.display = 'none';
+            }
+        }
+    </script> 
+       
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+    
+    {% comment %} <script>
+        function switchToPayee() {
+            const payeeTab = document.querySelector('#payee-tab');
+            payeeTab.click();
+        }
+        function switchToPayment() {
+            const paymentTab = document.querySelector('#payment-tab');
+            paymentTab.click();
+        }
+    </script> {% endcomment %}
+</body>
+</html>

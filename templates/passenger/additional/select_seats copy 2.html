@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bus Seat Layout with Sections</title>
+    <style>
+        .seat-galaxy {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px; /* Space between rows */
+            margin-top: 20px;
+        }
+        
+        .nebula-row {
+            display: flex;
+            gap: 15px; /* Space between seats */
+        }
+        
+        .astro-chair {
+            width: 50px;
+            height: 50px;
+            background-color: #2b2b2b;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: transform 0.2s ease-in-out;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+        }
+        
+        .star-open:hover {
+            transform: scale(1.1);
+            background-color: #28a745;
+            box-shadow: 0 6px 10px rgba(0, 255, 0, 0.6);
+        }
+        
+        .meteor-locked {
+            background-color: #e74c3c;
+            cursor: not-allowed;
+            opacity: 0.7;
+            box-shadow: none;
+        }
+        
+        .wormhole-gap {
+            width: 40px;  /* Aisle width increased */
+            height: 50px;
+        }
+        
+        .selected-planet {
+            background-color: #f1c40f !important;
+            color: #000;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="bus-layout">
+        <div class="seat-galaxy">
+            <div class="nebula-row">
+                <div class="astro-chair meteor-locked" data-seat-code="1" onclick="zapSeat('1')">
+                    <span>1</span>
+                </div>
+                <div class="astro-chair star-open" data-seat-code="2" onclick="zapSeat('2')">
+                    <span>2</span>
+                </div>
+                <div class="astro-chair meteor-locked" data-seat-code="3" onclick="zapSeat('3')">
+                    <span>3</span>
+                </div>
+                <div class="wormhole-gap"></div>
+            </div>
+            <div class="nebula-row">
+                <div class="astro-chair star-open" data-seat-code="4" onclick="zapSeat('4')">
+                    <span>4</span>
+                </div>
+                <div class="astro-chair meteor-locked" data-seat-code="5" onclick="zapSeat('5')">
+                    <span>5</span>
+                </div>
+                <div class="astro-chair star-open" data-seat-code="6" onclick="zapSeat('6')">
+                    <span>6</span>
+                </div>
+                <div class="wormhole-gap"></div>
+            </div>
+            <!-- Add more rows as needed -->
+        </div>
+        
+    </div>
+</body>
+</html>

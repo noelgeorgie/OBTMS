@@ -1,0 +1,482 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>User Dashboard</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Travelix Project">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- CSS Links -->
+    <link rel="stylesheet" type="text/css" href="{% static 'pass/styles/bootstrap4/bootstrap.min.css'%}">
+    <link rel="stylesheet" href="{% static 'pass/plugins/font-awesome-4.7.0/css/font-awesome.min.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'pass/styles/elements_styles.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'pass/styles/elements_responsive.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'pass/plugins/OwlCarousel2-2.2.1/owl.carousel.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'pass/plugins/OwlCarousel2-2.2.1/owl.theme.default.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'pass/plugins/OwlCarousel2-2.2.1/animate.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'pass/styles/main_styles.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'pass/styles/responsive.css'%}">
+    
+    <style>
+        /* General Styling */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f0f8ff;
+            overflow-y: auto; /* Enable vertical scrollbar if needed */
+            }
+            .home_slider_container {
+                height: 700vh; /* Increased height */
+            }
+            .home_slider_background {
+                height: 100%;
+                background-size: cover;
+                background-position: center;
+                background-color: #f0f8ff;
+            }
+            .home_slider_content {
+                position: relative;
+                z-index: 1;
+                color: white;
+            }    
+            .text-center {
+                text-align: center;
+            }
+            .animated-background {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+                z-index: -1; /* Send behind other content */
+            }
+            .circle {
+                position: absolute;
+                border-radius: 50%;
+                background: rgba(255, 165, 0, 0.6);
+                animation: float 6s infinite ease-in-out;
+            }
+            @keyframes float {
+                0% { transform: translateY(0); }
+                50% { transform: translateY(-20px); }
+                100% { transform: translateY(0); }
+            }
+            .circle1 { width: 100px; height: 100px; top: 20%; left: 10%; animation-duration: 4s; }
+            .circle2 { width: 150px; height: 150px; top: 30%; left: 70%; animation-duration: 5s; }
+            .circle3 { width: 80px; height: 80px; top: 70%; left: 40%; animation-duration: 6s; }
+            .circle4 { width: 120px; height: 120px; top: 50%; left: 80%; animation-duration: 3s; }
+            
+            .bus-layout { 
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                position: relative;
+                margin: 20px 0;
+            }
+            .driver {
+                width: 50px;
+                height: 50px;
+                background-color: #007bff;
+                text-align: center;
+                line-height: 50px;
+                border-radius: 5px;
+                color: white;
+                cursor: not-allowed;
+                margin: 5px;
+            }
+            .divider {
+                position: relative;
+                width: 30%;
+                height: 2px;
+                background-color: black;
+                margin-top: 10px;
+            }
+            .divider-vertical {
+                position: absolute; /* Position relative to the parent */
+                width: 2px; /* Width of the vertical divider */
+                height: 100%; /* Set to 100% or any specific height */
+                background-color: black;
+                margin-top: 10px;
+            }
+            
+            /* Move the divider to the left */
+            .divider-left {
+                left: 0; /* Move the divider to the left */
+            }
+            
+            /* Move the divider to the right */
+            .divider-right {
+                right: 0; /* Move the divider to the right */
+            }
+            
+            .passenger-seats {
+                display: flex;
+                justify-content: center;
+                align-items: flex-start;
+                flex-wrap: wrap;
+                margin-top: 20px; /* Create some space between driver and seats */
+            }
+            .row {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            .seat {
+                width: 100px;
+                height: 100px;
+                background-color:rgb(165, 179, 181);
+                text-align: center;
+                line-height: 100px;
+                border-radius: 5px;
+                color: white;
+                cursor: pointer;
+                margin: 5px;
+                transition: background-color 0.3s, border-color 0.3s;
+            }
+            .seat.booked {
+                background-color: red;
+                cursor: not-allowed;
+            }
+            .seat.available {
+              
+            }
+            .seat.selected {
+                background-color:rgb(4, 170, 23);
+            }
+            .empty-seat {
+                width: 16%; /* Set width to match seat size */
+                height: 50px; /* Set height to match seat size */
+                margin: 5px; /* Space between seats */
+                visibility: hidden; /* Keeps it hidden but occupies space */
+            }
+           .table-container {
+                position: relative;
+                margin: 200px auto; /* Adjust as needed */
+                padding: 20px;
+                background: rgb(170, 179, 173);
+                border-radius: 8px;
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+                z-index: 1; /* Ensure this is above the background */
+                overflow-y: auto; /* Add scrollbar to the table container if content overflows */
+                max-height: 70vh; /* Limit height and allow scrolling within this section */
+            }
+            th, td {
+                color: #333;
+                text-align: center;
+            }
+            .fade-in {
+                animation: fadeIn 0.5s;
+            }
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+            .text-center {
+                color: #333; /* Dark grey color */
+            }
+            .super_container {
+                min-height: 100vh; /* Ensure it occupies at least full viewport height */
+                display: flex;
+                flex-direction: column;
+            }
+            .table tbody tr {
+                opacity: 0; /* Start invisible */
+                transform: translateY(20px); /* Start slightly translated */
+                transition: opacity 0.5s ease, transform 0.5s ease;
+            }
+            .table tbody tr.show {
+                opacity: 1; /* Fade in */
+                transform: translateY(0); /* Move to original position */
+            }
+            th, td {
+                text-align: center; /* Center align table headers and cells */
+            }
+            .aisle-space {
+                width: 30px;  /* Adjust the width to control aisle space */
+                height: 40px; /* Same height as seats for alignment */
+            }
+            .door {
+                width: 40px; /* Adjust width */
+                height: 60px; /* Adjust height */
+                background-color:rgb(130, 128, 148); /* Dark Red */
+                border-radius: 5px;
+                text-align: center;
+                line-height: 80px;
+                color: white;
+                cursor: not-allowed;
+                font-weight: bold;
+                font-size: 14px;
+                background-image: url("{% static 'pass/images/door.png' %}"); /* Use a PNG image */
+                background-size: cover;
+                background-position: center;
+            }
+            
+            .television {
+                width: 200px; /* Adjust width */
+                height: 60px; /* Adjust height */
+                background-color: #000; /* Black */
+                border-radius: 5px;
+                text-align: center;
+                line-height: 40px;
+                color: white;
+                cursor: not-allowed;
+                font-weight: bold;
+                font-size: 14px;
+                background-image: url("{% static 'pass/images/tv.png' %}"); /* Use a PNG image */
+                background-size: cover;
+                background-position: center;
+            }
+            
+    </style>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+</head>
+<body>
+    <div class="super_container">
+
+        <!-- Header -->
+        <header class="header">
+            <!-- Top Bar -->
+            <div class="top_bar">
+                <div class="container">
+                    <div class="row">
+                        <div class="col d-flex flex-row">
+                            <div class="phone">+91 9897654387</div>
+                            <div class="social">
+                                <ul class="social_list">
+                                    <li class="social_list_item"><a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a></li>
+                                    <li class="social_list_item"><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                                    <li class="social_list_item"><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                                    <li class="social_list_item"><a href="#"><i class="fa fa-dribbble" aria-hidden="true"></i></a></li>
+                                    <li class="social_list_item"><a href="#"><i class="fa fa-behance" aria-hidden="true"></i></a></li>
+                                    <li class="social_list_item"><a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Navigation -->
+            <nav class="main_nav">
+                <div class="container">
+                    <div class="row">
+                        <div class="col main_nav_col d-flex flex-row align-items-center justify-content-start">
+                            <div class="logo_container">
+                                <div class="logo"><a href="#"><img src="{% static 'pass/images/logo.png'%}" alt="">travelix</a></div>
+                            </div>
+                            <div class="main_nav_container ml-auto">
+                                <ul class="main_nav_list">
+                                  <li class="main_nav_item"><a href="{% url 'passenger_dashboard' %}">home</a></li>
+                                  <li class="main_nav_item"><a href="{% url 'passenger_about' %}">about us</a></li>
+                                  <li class="main_nav_item"><a href="{% url 'passenger_offers' %}">offers</a></li>
+                                  <li class="main_nav_item"><a href="{% url 'passenger_blog' %}">news</a></li>
+                                  <li class="main_nav_item"><a href="{% url 'passenger_contact' %}">contact</a></li>
+                                </ul>
+                            </div>
+                            <div class="content_search ml-lg-0 ml-auto">
+                                <form id="search_form" class="search_form bez_1">
+                                    <input type="search" class="search_content_input bez_1">
+                                </form>
+                                <div class="hamburger">
+                                    <i class="fa fa-bars trans_200"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <!-- Home -->
+        <div class="home">
+            <div class="home_slider_container">
+                <div class="animated-background">
+                    <div class="circle circle1"></div>
+                    <div class="circle circle2"></div>
+                    <div class="circle circle3"></div>
+                    <div class="circle circle4"></div>
+                </div>
+                <div class="alert-container">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+        
+                <div class="container">
+                    <div class="table-container">
+                        <div class="container mt-5">
+                            <h2 class="text-center">Select Seats on {{ bus.bus_name }}</h2>
+                            <p class="text-center">Capacity: {{ bus.capacity }} seats</p>
+        
+                            <form method="POST" action="">
+                                {% csrf_token %}
+                                
+                                <div class="bus-layout">
+                                    <div class="divider"></div> 
+                                    <br>
+                                    <!-- Driver Seat Row -->
+                                    <div class="row" style="display: flex; justify-content: space-between; width: 35%; margin-left: -105px;">
+                                        <div class="empty-seat"></div>
+                                        <div class="driver">Staff</div>
+                                        <div class="driver">Driver</div>
+                                    </div>
+                                    <div class="row" style="display: flex; justify-content: space-between; width: 35%; margin-left: -110px;">
+                                        <div class="empty-seat"></div>
+                                        <div class="door"></div>
+                                        <div class="television"></div>
+                                    </div>
+                                    
+                                    
+{% comment %} <div class="divider-vertical" style="height: 300px;"></div>     {% endcomment %}
+                         
+                                   
+                                    
+                                    <!-- Divider -->
+                                    <div class="divider"></div>
+        
+                                    <!-- Passenger Seats -->
+                                    <div class="passenger-seats">
+                                        {% for row in seat_matrix %}
+                                            <div class="row">
+                                                {% for seat_number in row %}
+                                                    {% if forloop.counter == 3 %}
+                                                        <!-- Aisle between Section 1 and Section 2 -->
+                                                        <div class="aisle-space"></div>
+                                                    {% endif %}
+                                    
+                                                    {% if seat_number %}
+                                                        <div class="seat {% if seat_number in booked_seats %}booked{% else %}available{% endif %}" 
+                                                             style="background-image: url('{% static 'pass/images/car-seat.png' %}'); background-size: cover; width: 40px; height: 40px;"
+                                                             {% if seat_number in booked_seats %} 
+                                                                 onclick="alert('This seat is already booked.')" 
+                                                             {% else %}
+                                                                 onclick="selectSeat({{ seat_number }})" 
+                                                             {% endif %}
+                                                             data-seat-number="{{ seat_number }}">
+                                                            <span>{{ seat_number }}</span>
+                                                        </div>
+                                                    {% else %}
+                                                        <div class="empty-seat"></div>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                        {% endfor %}
+                                    </div>            
+                                    <br>
+                                    <div class="divider"></div>                 
+                                </div>
+        
+                                <div class="text-center mt-4">
+                                    <label for="seat_numbers">Selected Seats: <span id="selected-seats">None</span></label>
+                                    <br>
+                                    <label for="seat_numbers">Please select at-least one seat to proceed to Payment</label>
+                                    <br>
+                                    <input type="hidden" id="seat_numbers" name="selected_seats">
+                                    
+                                    <button type="submit" class="btn btn-primary" disabled>Proceed to Payment</button>
+                                </div>
+                                
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            // Update the selected seats when a seat is clicked
+            function selectSeat(seatNumber) {
+                const selectedSeats = document.getElementById('selected-seats');
+                const seatInput = document.getElementById('seat_numbers');
+                let currentSelection = seatInput.value ? seatInput.value.split(',') : [];
+
+                // If the seat is already selected, remove it
+                if (currentSelection.includes(seatNumber.toString())) {
+                    currentSelection = currentSelection.filter(seat => seat !== seatNumber.toString());
+                } else {
+                    currentSelection.push(seatNumber.toString());
+                }
+
+                // Update the UI
+                selectedSeats.textContent = currentSelection.length > 0 ? currentSelection.join(', ') : 'None';
+                seatInput.value = currentSelection.join(','); // Store the selected seats as a comma-separated string
+
+                // Enable the submit button if there are selected seats
+                const submitButton = document.querySelector('button[type="submit"]');
+                submitButton.disabled = currentSelection.length === 0;
+            }
+        </script>        
+        <script>
+            let selectedSeats = [];
+
+            function selectSeat(seatNumber) {
+                const seatElement = document.querySelector(`[data-seat-number="${seatNumber}"]`);
+                
+                if (!seatElement.classList.contains('booked')) {
+                    if (selectedSeats.includes(seatNumber)) {
+                        // If seat is already selected, deselect it
+                        selectedSeats = selectedSeats.filter(seat => seat !== seatNumber);
+                        seatElement.classList.remove('selected');
+                    } else {
+                        // If seat is not selected, select it
+                        selectedSeats.push(seatNumber);
+                        seatElement.classList.add('selected');
+                    }
+                }
+            
+                // Update the label with selected seats
+                const seatCountLabel = document.getElementById('selected-seats');
+                if (selectedSeats.length > 0) {
+                    seatCountLabel.textContent = selectedSeats.join(', ');  // Show selected seat numbers
+                } else {
+                    seatCountLabel.textContent = "None";  // If no seats are selected, show "None"
+                }
+            
+                // Update the hidden input field with selected seats
+                document.getElementById('seat_numbers').value = selectedSeats.join(',');
+            
+                // Enable or disable the button based on selected seats
+                const proceedButton = document.querySelector('button[type="submit"]');
+                proceedButton.disabled = selectedSeats.length === 0;
+            }
+            
+        </script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                let selectedSeats = [];
+            
+                document.querySelectorAll(".seat.available").forEach(seat => {
+                    seat.addEventListener("click", function() {
+                        const seatNumber = this.getAttribute("data-seat-number");
+            
+                        if (selectedSeats.includes(seatNumber)) {
+                            selectedSeats = selectedSeats.filter(s => s !== seatNumber);
+                            this.classList.remove("selected");
+                        } else {
+                            selectedSeats.push(seatNumber);
+                            this.classList.add("selected");
+                        }
+            
+                        document.getElementById("selected_seats").value = selectedSeats.join(",");
+                    });
+                });
+            });
+            
+        </script>
+    </body>
+</html>

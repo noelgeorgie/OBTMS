@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Details</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'management_dash/css/style.min.css'%}">
+    <style>
+        /* Your CSS styles here */
+    </style>
+</head>
+<body>
+    <div class="page-flex">
+        <aside class="sidebar">
+            </aside>
+
+        <div class="main-wrapper">
+            <nav class="main-nav--bg">
+                </nav>
+
+            <div class="animated-background">
+                </div>
+
+            <div class="container">
+                <div class="table-container fade-in">
+                    <h2 class="text-center">User Details</h2>
+                    <table class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone Number</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="submissionTable">
+                            {% for passenger in passengers %}
+                            <tr>
+                                <td>{{ passenger.passenger_id }}</td>
+                                <td>{{ passenger.name }}</td>
+                                <td>{{ passenger.email }}</td>
+                                <td>{{ passenger.phone_number }}</td>
+                                <td>
+                                    <a href="{% url 'admin_delete_passenger' id=passenger.passenger_id %}" 
+                                    onclick="return confirm('Are you sure you want to delete this passenger?');">
+                                     Delete
+                                 </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+            <script>
+                // JavaScript for table row animations
+            </script>
+            <script src="{% static 'management_dash/plugins/chart.min.js'%}"></script>
+            <script src="{% static 'management_dash/plugins/feather.min.js'%}"></script>
+            <script src="{% static 'management_dash/js/script.js'%}"></script>
+        </div>
+    </div>
+</body>
+</html>

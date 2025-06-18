@@ -1,0 +1,481 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>User Dashboard</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Travelix Project">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- CSS Links -->
+    <link rel="stylesheet" type="text/css" href="{% static 'pass/styles/bootstrap4/bootstrap.min.css'%}">
+    <link rel="stylesheet" href="{% static 'pass/plugins/font-awesome-4.7.0/css/font-awesome.min.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'pass/styles/elements_styles.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'pass/styles/elements_responsive.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'pass/plugins/OwlCarousel2-2.2.1/owl.carousel.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'pass/plugins/OwlCarousel2-2.2.1/owl.theme.default.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'pass/plugins/OwlCarousel2-2.2.1/animate.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'pass/styles/main_styles.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'pass/styles/responsive.css'%}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #e9ecef;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f8ff;
+            overflow-y: auto; /* Enable vertical scrollbar if needed */
+        }
+      
+        .tab-content {
+            margin-top: 20px;
+        }
+        .fare-summary {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        .fare-summary h5 {
+            margin-bottom: 20px;
+            color: #d32f2f;
+        }
+        .fare-summary table {
+            width: 100%;
+        }
+        .route-svg {
+            margin-top: 20px;
+        }
+        .btn-primary {
+            background-color: #d32f2f;
+            border-color: #d32f2f;
+        }
+        .btn-primary:hover {
+            background-color: #b71c1c;
+            border-color: #b71c1c;
+        }
+        .step-header {
+            background-color: #fbe9e7;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        .step-header h6 {
+            margin: 0;
+            color: #d32f2f;
+        }
+        .nav-tabs .nav-link.active {
+            background-color: #d32f2f;
+            color: #fff;
+        }
+        .card {
+            border: none;
+        }
+   
+        .seat-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .seat {
+            width: 50px;
+            height: 50px;
+            border: 2px solid #d32f2f;
+            border-radius: 4px;
+            text-align: center;
+            line-height: 45px;
+            background-image: url("{% static 'pass/images/car-seat.png' %}"); /* Use a PNG image */
+            font-weight: bold;
+            background-color: #fff;
+            cursor: pointer;
+        }
+        .seat.selected {
+            background-color: #d32f2f;
+            color: #fff;
+        }
+        .home_slider_container {
+            height: 700vh; /* Increased height */
+        }
+        .home_slider_background {
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+        }
+        .home_slider_content {
+            position: relative;
+            z-index: 1;
+            color: white;
+        }    
+        .text-center {
+            text-align: center;
+            
+        }
+		.animated-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1; /* Send behind other content */
+        }
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 165, 0, 0.6);
+            animation: float 6s infinite ease-in-out;
+        }
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0); }
+        }
+        .circle1 { width: 100px; height: 100px; top: 20%; left: 10%; animation-duration: 4s; }
+        .circle2 { width: 150px; height: 150px; top: 30%; left: 70%; animation-duration: 5s; }
+        .circle3 { width: 80px; height: 80px; top: 70%; left: 40%; animation-duration: 6s; }
+        .circle4 { width: 120px; height: 120px; top: 50%; left: 80%; animation-duration: 3s; }
+        
+        .table-container {
+            position: relative;
+            margin: 200px auto; /* Adjust as needed */
+            padding: 20px;
+            background: rgba(209, 213, 223, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            z-index: 1; /* Ensure this is above the background */
+            overflow-y: auto; /* Add scrollbar to the table container if content overflows */
+            max-height: 70vh; /* Limit height and allow scrolling within this section */
+        }
+		.text-center {
+            color: #333; /* Dark grey color */
+        }
+        .super_container {
+            min-height: 100vh; /* Ensure it occupies at least full viewport height */
+            display: flex;
+            flex-direction: column;
+        }
+        /* Booking Details Section */
+        .card-title {
+            color: #1d3557; /* Dark Blue */
+        }
+
+        .card p {
+            color: #2c3e50; /* Dark Grey-Blue */
+            font-weight: 500;
+        }
+
+        /* Strong (Bold) Text */
+        .card p strong {
+            color:rgb(49, 57, 65); /* Red for highlighting important details */
+        }
+
+        /* Muted Text */
+        .text-muted {
+            color: #6c757d; /* Grey */
+        }
+    </style>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+</head>
+<body>
+    <body style="background-color: #f8f9fa;">
+        <div class="super_container">
+    
+            <!-- Header -->
+            <header class="header">
+                <!-- Top Bar -->
+                <div class="top_bar">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col d-flex flex-row">
+                                <div class="phone">+91 9897654387</div>
+                                <div class="social">
+                                    <ul class="social_list">
+                                        <li class="social_list_item"><a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a></li>
+                                        <li class="social_list_item"><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                                        <li class="social_list_item"><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                                        <li class="social_list_item"><a href="#"><i class="fa fa-dribbble" aria-hidden="true"></i></a></li>
+                                        <li class="social_list_item"><a href="#"><i class="fa fa-behance" aria-hidden="true"></i></a></li>
+                                        <li class="social_list_item"><a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- Main Navigation -->
+                <nav class="main_nav">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col main_nav_col d-flex flex-row align-items-center justify-content-start">
+                                <div class="logo_container">
+                                    <div class="logo"><a href="#"><img src="{% static 'pass/images/logo.png'%}" alt="">travelix</a></div>
+                                </div>
+                                <div class="main_nav_container ml-auto">
+                                    <ul class="main_nav_list">
+                                      <li class="main_nav_item"><a href="{% url 'passenger_dashboard' %}">home</a></li>
+                                      <li class="main_nav_item"><a href="{% url 'passenger_about' %}">about us</a></li>
+                                      <li class="main_nav_item"><a href="{% url 'passenger_offers' %}">offers</a></li>
+                                      <li class="main_nav_item"><a href="{% url 'passenger_blog' %}">news</a></li>
+                                      <li class="main_nav_item"><a href="{% url 'passenger_contact' %}">contact</a></li>
+                                    </ul>
+                                </div>
+                                <div class="content_search ml-lg-0 ml-auto">
+                                    <form id="search_form" class="search_form bez_1">
+                                        <input type="search" class="search_content_input bez_1">
+                                    </form>
+                                    <div class="hamburger">
+                                        <i class="fa fa-bars trans_200"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </header>
+    
+            <!-- Home -->
+            <div class="home">
+                <!-- Home Slider -->
+                <div class="home_slider_container">
+                    <div class="owl-carousel home_slider owl-theme">
+                        <!-- Slider Item 1 -->
+                        <div class="home_slider_item">
+                            <div class="home_slider_background" style="background-image:url({% static 'pass/images/home_slider.jpg'%})"></div>
+                            <div class="home_slider_content text-center">
+                                <div class="home_slider_content_inner">
+                                    <h1>discover</h1>
+                                    <h1>the world with us</h1>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Additional Slider Items -->
+                        <div class="home_slider_item">
+                            <div class="home_slider_background" style="background-image:url({% static 'pass/images/home_slider.jpg'%})"></div>
+                            <div class="home_slider_content text-center">
+                                <div class="home_slider_content_inner">
+                                    <h1>discover</h1>
+                                    <h1>the world through us</h1>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="home_slider_item">
+                            <div class="home_slider_background" style="background-image:url({% static 'pass/images/home_slider.jpg'%})"></div>
+                            <div class="home_slider_content text-center">
+                                <div class="home_slider_content_inner">
+                                    <h1>discover</h1>
+                                    <h1>the world around us</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="animated-background">
+                        <div class="circle circle1"></div>
+                        <div class="circle circle2"></div>
+                        <div class="circle circle3"></div>
+                        <div class="circle circle4"></div>
+                    </div>
+                    
+                    <div class="container">
+                        <div class="table-container fade-in">
+                            <h2 class="text-center mb-4">Enter Passenger Deatils</h2>
+                            <div class="container mt-4">
+                                <div class="row">
+                                    <div class="container">
+                                        <div class="row">
+                                            <!-- Left Side: Booking Form -->
+                                            <div class="col-lg-8">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <ul class="nav nav-tabs card-header-tabs" id="bookingTabs" role="tablist">
+                                                            <li class="nav-item">
+                                                                <button class="nav-link active" id="traveller-tab" data-bs-toggle="tab" data-bs-target="#traveller" type="button" role="tab">1. Traveller Details</button>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <button class="nav-link" id="payee-tab" data-bs-toggle="tab" data-bs-target="#payee" type="button" role="tab">2. Payee Details</button>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <button class="nav-link" id="payment-tab" data-bs-toggle="tab" data-bs-target="#payment" type="button" role="tab">3. Payment Details</button>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <div class="tab-content" id="bookingTabsContent">
+                                                            <!-- Traveller Details -->
+                                                            <div class="tab-pane fade show active" id="traveller" role="tabpanel">
+                                                                <div class="step-header">
+                                                                    <h6>Enter details for each selected seat</h6>
+                                                                </div>
+                                                                <form>
+                                                                    <div class="card-body">
+                                                                        <div class="d-flex align-items-center gap-3">
+                                                                            <div class="seat-container">
+                                                                                <div class="seat" onclick="toggleSeat(this)">1</div>
+                                                                            </div>
+                                                                            <input type="text" class="form-control" placeholder="Name of the Passenger">
+                                                                            <input type="number" class="form-control" placeholder="Age">
+                                                                            <select class="form-select">
+                                                                                <option value="Male">Male</option>
+                                                                                <option value="Female">Female</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                    <button class="btn btn-primary w-100 mt-3" type="button" onclick="switchToPayee()">Proceed to Payee Details</button>
+                                                                </form>
+                                                            </div>
+                                    
+                                                            <!-- Payee Details -->
+                                                            <div class="tab-pane fade" id="payee" role="tabpanel">
+                                                                <div class="step-header">
+                                                                    <h6>Enter payee contact information</h6>
+                                                                </div>
+                                                                <form>
+                                                                    <div class="row mb-3">
+                                                                        <!-- Mobile Number with +91 -->
+                                                                        <div class="col-md-6">
+                                                                            <label for="mobile" class="form-label">Mobile Number</label>
+                                                                            <div class="input-group">
+                                                                                <span class="input-group-text">+91</span>
+                                                                                <input type="text" class="form-control" id="mobile" placeholder="Enter mobile number">
+                                                                            </div>
+                                                                        </div>
+                                                                        
+                                                                        <!-- Email Address -->
+                                                                        <div class="col-md-6">
+                                                                            <label for="email" class="form-label">Email Address</label>
+                                                                            <input type="email" class="form-control" id="email" placeholder="Enter email">
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                    <button class="btn btn-primary w-100" type="button" onclick="switchToPayment()">Proceed to Payment Details</button>
+                                                                </form>
+                                                                
+                                                            </div>
+                                    
+                                                            <!-- Payment Details -->
+                                                            <div class="tab-pane fade" id="payment" role="tabpanel">
+                                                                <div class="step-header">
+                                                                    <h6>Enter payment details</h6>
+                                                                </div>
+                                                                <form>
+                                                                    <div class="mb-3">
+                                                                        <label for="card-number" class="form-label">Card Number</label>
+                                                                        <input type="text" class="form-control" id="card-number" placeholder="Enter your card number">
+                                                                    </div>
+                                                                    <div class="mb-3">
+                                                                        <label for="expiry-date" class="form-label">Expiry Date</label>
+                                                                        <input type="text" class="form-control" id="expiry-date" placeholder="MM/YY">
+                                                                    </div>
+                                                                    <div class="mb-3">
+                                                                        <label for="cvv" class="form-label">CVV</label>
+                                                                        <input type="password" class="form-control" id="cvv" placeholder="Enter CVV">
+                                                                    </div>
+                                                                    <button class="btn btn-primary w-100" type="submit">Make Payment</button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                    
+                                            <!-- Right Side: Fare Summary and Route SVG -->
+                                            <div class="col-lg-4">
+                                                <div class="fare-summary card p-3">
+                                                    <h5>Cancellation Policy</h5>
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Time Before Trip Start</th>
+                                                                <th>Cancellation</th>
+                                                                <th>Refund</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>Before 72 HRS</td>
+                                                                <td>0%</td>
+                                                                <td>Full Refund*</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>48 HRS - 72 HRS</td>
+                                                                <td>10%</td>
+                                                                <td>90%</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>24 HRS - 48 HRS</td>
+                                                                <td>20%</td>
+                                                                <td>80%</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>12 HRS - 24 HRS</td>
+                                                                <td>30%</td>
+                                                                <td>70%</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>2 HRS - 12 HRS</td>
+                                                                <td>40%</td>
+                                                                <td>60%</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>Within 2 HRS</td>
+                                                                <td>50%</td>
+                                                                <td>50%</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" id="agreeCheckbox" required>
+                                                        <label class="form-check-label" for="agreeCheckbox">
+                                                            I agree to the cancellation policy
+                                                        </label>
+                                                    </div>
+
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function switchToPayee() {
+            const payeeTab = document.querySelector('#payee-tab');
+            payeeTab.click();
+        }
+        function switchToPayment() {
+            const paymentTab = document.querySelector('#payment-tab');
+            paymentTab.click();
+        }
+    </script>
+</body>
+</html>

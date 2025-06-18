@@ -1,0 +1,458 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Staff Dashboard</title>
+  <!-- Custom styles -->
+  <link href="https://fonts.googleapis.com/css2?family=Funnel+Display&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'management_dash/css/style.min.css'%}">
+  <style>
+
+    /* Styles for Select Tag */
+    select {
+      border: 1px solid #ccc; /* Light gray border */
+      border-radius: 4px; /* Rounded corners */
+      padding: 10px; /* Padding inside the select */
+      font-size: 16px; /* Font size */
+      margin-right: 10px; /* Space between select and button */
+      appearance: none; /* Remove default arrow */
+      background-color: #fff; /* White background */
+      cursor: pointer; /* Pointer cursor on hover */
+    }
+
+    /* Styles for Button */
+    .nav-button {
+      background-color: #4CAF50; /* Green background */
+      color: white; /* White text */
+      border: none; /* No border */
+      padding: 10px 15px; /* Vertical and horizontal padding */
+      border-radius: 4px; /* Rounded corners */
+      cursor: pointer; /* Pointer cursor on hover */
+      transition: background-color 0.3s ease; /* Transition effect */
+    }
+
+    /* Button Hover Effect */
+    button:hover {
+      background-color: white; /* Darker green on hover */
+    }
+
+    /* Focus Effect for Select and Button */
+    select:focus, button:focus {
+      outline: none; /* Remove outline on focus */
+      border-color: #4CAF50; /* Green border on focus */
+      box-shadow: 0 0 5px rgba(76, 175, 80, 0.5); /* Light green shadow */
+    }
+    /* Style for the subtitle */
+    h3.sub-title {
+      font-weight: bold; /* Bold text */
+      color: white; /* White text */
+      text-align: center; /* Center align subtitle */
+    }
+    .results-container  {
+      display: flex;               /* Use flexbox layout */
+      flex-direction: column;      /* Align items vertically */
+      align-items: center;         /* Center items horizontally */
+      justify-content: center;     /* Center items vertically */
+      height: 100%;                /* Ensure it takes full height of the parent */
+  }
+
+  .results {
+    width: 60%; /* Adjust this to your preference */
+    margin: 0 auto; /* Centers the container */
+    padding: 20px;
+    background-color:rgb(122, 122, 163); /* Dark blue background */
+    border-radius: 8px; /* Rounded corners for a modern look */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adds a subtle shadow */
+  }
+  
+  .results h3 {
+    color: #fff; /* White text color for better visibility */
+    font-family: 'Funnel Display', sans-serif;
+    margin-bottom: 10px;
+  }
+  
+  .results ul {
+    font-family: 'Funnel Display', sans-serif; /* Use Funnel Display font */
+    font-size: 16px; /* Adjust font size as needed */
+    color: #fff; /* White text color for contrast */
+    line-height: 1.6; /* Improve readability */
+    list-style-type: none; /* Remove default bullets */
+    padding: 0;
+  }
+  
+  /* Styling list items */
+  .results li {
+    padding: 8px 12px; /* Add padding between list items */
+    border-radius: 4px;
+  }
+  
+  /* Add hover effect to list items */
+  .results li:hover {
+    background-color: rgb(84, 84, 114); /* A lighter blue on hover */
+    cursor: pointer;
+  }
+  .dashboard-container {
+    text-align: center;
+}
+.statistics {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px 0;
+}
+.stat-box {
+    background: #23272a;
+    color: white;
+    padding: 15px;
+    border-radius: 8px;
+    width: 20%;
+    text-align: center;
+}
+.present {
+    background: #2ecc71;
+}
+.absent {
+    background: #e74c3c;
+}
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 18px;
+    text-align: left;
+}
+.styled-table th, .styled-table td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+.present td {
+    color: #2ecc71;
+}
+.absent td {
+    color: #e74c3c;
+}
+  </style>
+</head>
+
+<body>
+  <div class="layer"></div>
+  <!-- ! Body -->
+  <a class="skip-link sr-only" href="#skip-target">Skip to content</a>
+    <div class="page-flex">
+      <!-- ! Sidebar -->
+      {% include 'employee/staff_includes/sidebar.html' %}
+
+  <div class="main-wrapper">
+      <!-- ! Main nav -->
+        <nav class="main-nav--bg">
+          <div class="container main-nav">
+            <div class="main-nav-start">
+              <div class="main-nav-start">
+                <div class="search-wrapper">
+                  <form method="POST" action="">
+                    {% csrf_token %}
+                    <i data-feather="search" aria-hidden="true"></i>
+                      <input type="text" name="keywords" placeholder="Enter keywords ..." >
+                      <!--<select name="category" required>
+                            <option value="all">All</option>
+                            <option value="users">Users</option>
+                            <option value="bus-owners">Bus Owners</option>
+                            <option value="buses">Buses</option>
+                        </select> -->
+                        <button type="submit" name="search" style="display: none;"></button>
+                  </form> 
+                </div>
+              </div>
+            </div>
+            <div class="results">
+              {% if search_results.passengers %}
+                  <div>
+                     
+                      <ul class="list-unstyled">
+                          {% for passenger in search_results.passengers %}
+                              <li>Passenger: {{ passenger.name }} - {{ passenger.email }}</li>
+                          {% endfor %}
+                      </ul>
+                  </div>
+              {% endif %}
+          
+              {% if search_results.passengers %}
+                  {% else %}
+              <p style="font-family: 'Funnel Display', sans-serif; font-size: 16px; color: #fff; line-height: 1.6;">No results found.</p>
+              {% endif %}
+            </div>
+          
+          
+            <div class="main-nav-end">
+              <button class="sidebar-toggle transparent-btn" title="Menu" type="button">
+                <span class="sr-only">Toggle menu</span>
+                <span class="icon menu-toggle--gray" aria-hidden="true"></span>
+              </button>
+              <button class="theme-switcher gray-circle-btn" type="button" title="Switch theme">
+                <span class="sr-only">Switch theme</span>
+                <i class="sun-icon" data-feather="sun" aria-hidden="true"></i>
+                <i class="moon-icon" data-feather="moon" aria-hidden="true"></i>
+              </button>
+              
+            </div>
+          </div>      
+        </nav>
+      <!-- ! Main nav -->
+      
+      <!-- ! Main -->
+      <main class="main users chart-page" id="skip-target">
+        <div class="container">
+          <h2 class="main-title">Staff Dashboard | Welcome, {{ staff_name }} | ID: {{ staff.employee_id }}</h2>
+          
+          <div class="row stat-cards">
+            <div class="col-md-6 col-xl-3">
+              <article class="stat-cards-item">
+                
+                <div class="stat-cards-info">
+                  <p class="stat-cards-info__num">Bus </p>
+                    <p class="stat-cards-info__title">Total No: of Bus </p>
+                      <span class="stat-cards-info__profit success">
+                        <h2 class="stat-cards-info__num">{{ owner_bus_count }}</h2>
+                          <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="64"
+                              height="64"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              class="feather feather-bus">
+                              <path d="M3 11h18M3 16h18M5 5h14a2 2 0 0 1 2 2v9h-2v-9H3v9H1v-9a2 2 0 0 1 2-2z"/>
+                              <circle cx="7" cy="19" r="2"/>
+                              <circle cx="17" cy="19" r="2"/>
+                            </svg>
+                          </div>
+                      </span>
+                  </p>
+                </div>
+              </article>
+            </div>
+            <div class="col-md-6 col-xl-3">
+              <article class="stat-cards-item">
+                <div class="stat-cards-info">
+                  <p class="stat-cards-info__num">Route</p>
+                  <p class="stat-cards-info__title">Total No: of Routes</p>
+                    <span class="stat-cards-info__profit success">
+                      <h2 class="stat-cards-info__num">{{ route_count }}</h2>
+                        <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="64"
+                            height="64"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="#00FFFF"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path d="M2 12c3-6 9-6 12 0s9 6 12 0" />
+                          </svg>
+                        </div>
+                    </span>
+                  </p>
+                </div>
+              </article>
+            </div>
+            <div class="col-md-6 col-xl-3">
+              <article class="stat-cards-item"> 
+                <div class="stat-cards-info">
+                  <p class="stat-cards-info__num">Bookings</p>
+                    <p class="stat-cards-info__title">Total No: of Bookings</p>
+                      <span class="stat-cards-info__profit danger">
+                        <h2 class="stat-cards-info__num">{{ booking_count }}</h2>
+                          <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="64"
+                              height="64"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              class="feather feather-bookmark">
+                              <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+                            </svg>
+                          </div>  
+                      </span>
+                  </p>
+                </div>
+              </article>
+            </div>
+            <div class="col-md-6 col-xl-3">
+              <article class="stat-cards-item">
+                <div class="stat-cards-info">
+                  <p class="stat-cards-info__num">Schedules</p>
+                  <p class="stat-cards-info__title">Total No: of Bus Schedules</p>
+                    <span class="stat-cards-info__profit danger">
+                    <h2 class="stat-cards-info__num">{{ schedule_count }}</h2>
+                      <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="64"
+                          height="64"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="grey"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          class="feather feather-calendar">
+                          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                          <line x1="16" y1="2" x2="16" y2="6"/>
+                          <line x1="8" y1="2" x2="8" y2="6"/>
+                          <line x1="3" y1="10" x2="21" y2="10"/>
+                        </svg>
+                      </div>  
+                    </span>
+                  </p>
+                </div>
+              </article>
+            </div>
+            <div class="col-md-6 col-xl-3">
+              <article class="stat-cards-item">
+                <div class="stat-cards-info">
+                  <p class="stat-cards-info__num">Passengers</p>
+                  <p class="stat-cards-info__title">Total No: of Passengers</p>
+                    <span class="stat-cards-info__profit warning">
+                    <h2 class="stat-cards-info__num">{{ passenger_count }}</h2>
+                      <div class="col-4 col-sm-12 col-xl-4 text-center text-xl-right">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="grey" width="100px " height="100px">
+                          <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-3.31 0-10 1.67-10 5v2c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2v-2c0-3.33-6.69-5-10-5z"/>
+                        </svg>
+                      </div>
+                    </span>
+                  </p>
+                </div>
+              </article>
+            </div>
+          </div>       
+        </div>
+        <div class="layer"></div>
+        <a class="skip-link sr-only" href="#skip-target">Skip to content</a>
+        <div class="page-flex">
+          <div class="main-wrapper">
+            <main class="main users chart-page" id="skip-target">
+              <div class="container">
+                <div class="row">
+                  <div class="col-lg-12">
+                    <div class="col-lg-12">
+                      <div style="display: flex; align-items: center; gap: 20px;">
+                        <h2 class="main-title">Attendance Statistics</h2>
+                    
+                        <form method="post" action="{% url 'update_completed_orders' %}" style="margin: 0;">
+                          {% csrf_token %}
+                          <button type="submit"
+                            style="padding: 14px 24px; margin-top: -20px; background: linear-gradient(135deg,rgb(70, 83, 130),rgb(26, 37, 70)); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; box-shadow: 0 4px 12px rgba(114, 137, 218, 0.2); transition: all 0.3s ease;"
+                            onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 6px 16px rgba(114, 137, 218, 0.4)'; this.style.background='linear-gradient(135deg,rgb(33, 38, 56), #4c5c8a)';"
+                            onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 4px 12px rgba(114, 137, 218, 0.2)'; this.style.background='linear-gradient(135deg,rgb(60, 70, 109),rgb(40, 47, 68))';">
+                            Update Completed Snack Orders
+                          </button>
+                        </form>
+                      </div>
+                    
+                      <div class="chart">
+                        <canvas id="myChart" aria-label="Booking statistics" role="img"></canvas>
+                      </div>
+                    </div>
+                    
+                </div>
+              </div>
+            </main>
+          </div>
+        </div>
+        <script>
+          document.addEventListener("DOMContentLoaded", function () {
+            const ctx = document.getElementById("myChart").getContext("2d");
+        
+            // Define the months for the X-axis
+            const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        
+            // Attendance data from Django context
+            const presentData = JSON.parse('{{ present_data|safe }}');
+            const absentData = JSON.parse('{{ absent_data|safe }}');
+        
+            // Ensure data exists for all months
+            const presentValues = labels.map(month => presentData[month] || 0);
+            const absentValues = labels.map(month => absentData[month] || 0);
+        
+            new Chart(ctx, {
+              type: "bar", // Bar chart for better visualization
+              data: {
+                labels: labels,
+                datasets: [
+                  {
+                    label: "Present",
+                    data: presentValues,
+                    borderColor: "#8A2BE2", // Purple for bookings
+                    backgroundColor: "rgba(138, 43, 226, 0.2)",
+                    pointBackgroundColor: "#8A2BE2",
+                    borderWidth: 2
+                  },
+                  {
+                    label: "Absent",
+                    data: absentValues,
+                    borderColor: "#FF6347", // Red for cancellations
+                    backgroundColor: "rgba(255, 99, 71, 0.2)",
+                    pointBackgroundColor: "#FF6347",
+                    borderWidth: 2
+                  }
+                ]
+              },
+              options: {
+                responsive: true,
+                scales: {
+                  x: {
+                    grid: { display: false },
+                    ticks: { color: "#bbb" }
+                  },
+                  y: {
+                    beginAtZero: true,
+                    min: 0,
+                    max: 100,
+                    grid: { color: "#333" },
+                    ticks: {
+                      stepSize: 20, // Show 0, 20, 40, 60, 80, 100
+                      color: "#bbb"
+                    }
+                  }
+                },
+                plugins: {
+                  legend: {
+                    position: "top",
+                    labels: { color: "#bbb" }
+                  }
+                }
+              }
+            });
+          });
+        </script>
+        
+
+
+
+      </main>
+      <!-- ! Footer -->
+    </div>
+  </div>
+  <!-- Chart library -->
+  <script src="{% static 'management_dash/plugins/chart.min.js'%}"></script>
+  <!-- Icons library -->
+  <script src="{% static 'management_dash/plugins/feather.min.js'%}"></script>
+  <!-- Custom scripts -->
+  <script src="{% static 'management_dash/js/script.js'%}"></script>
+</body>
+</html>

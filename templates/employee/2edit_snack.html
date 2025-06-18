@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snack Form</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .form-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            background-color: #fff;
+        }
+        
+        .form-title {
+            margin-bottom: 25px;
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        
+        .form-label {
+            font-weight: 500;
+        }
+        
+        .image-preview {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+        }
+        
+        .image-preview img {
+            border-radius: 6px;
+            object-fit: cover;
+        }
+        
+        .image-preview-text {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+        
+        .btn-submit {
+            padding: 10px 30px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+        }
+        
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .custom-file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+        
+        .input-field:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <div class="container">
+        <div class="form-container">
+            <h2 class="form-title">Update Snack Details</h2>
+            
+            <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+                {% csrf_token %}
+                
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <label for="snackName" class="form-label">Snack Name</label>
+                        <input id="snackName" class="input-field form-control" type="text" name="name" value="{{ snack.name }}" placeholder="Enter snack name" required>
+                        <div class="invalid-feedback">
+                            Please provide a snack name.
+                        </div>
+                    </div>
+                
+                    <div class="col-md-6">
+                        <label for="snackPrice" class="form-label">Price (₹)</label>
+                        <div class="input-group">
+                            <span class="input-group-text">₹</span>
+                            <input id="snackPrice" class="input-field form-control" type="number" step="0.01" name="price" value="{{ snack.price }}" placeholder="0.00" required>
+                            <div class="invalid-feedback">
+                                Please specify a valid price.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="snackImage" class="form-label">Snack Image</label>
+                    <input id="snackImage" class="input-field form-control" type="file" name="image" accept="image/*">
+                    
+                    {% if snack.image %}
+                    <div class="image-preview mt-3">
+                        <div class="row align-items-center">
+                            <div class="col-auto">
+                                <img src="{{ snack.image.url }}" alt="{{ snack.name }}" class="img-thumbnail" width="100">
+                            </div>
+                            <div class="col">
+                                <p class="image-preview-text mb-0">Current image will be replaced if you select a new one</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <button type="button" class="btn btn-outline-secondary me-2">Cancel</button>
+                    <button type="submit" class="btn btn-success btn-submit">Update Snack</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Form validation
+        (function() {
+            'use strict';
+            
+            const forms = document.querySelectorAll('.needs-validation');
+            
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
+        
+        // Image preview
+        document.getElementById('snackImage').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    if (document.querySelector('.image-preview')) {
+                        const img = document.querySelector('.image-preview img');
+                        img.src = event.target.result;
+                    } else {
+                        const previewDiv = document.createElement('div');
+                        previewDiv.className = 'image-preview mt-3';
+                        previewDiv.innerHTML = `
+                            <div class="row align-items-center">
+                                <div class="col-auto">
+                                    <img src="${event.target.result}" alt="Preview" class="img-thumbnail" width="100">
+                                </div>
+                                <div class="col">
+                                    <p class="image-preview-text mb-0">New image selected</p>
+                                </div>
+                            </div>
+                        `;
+                        document.getElementById('snackImage').parentNode.appendChild(previewDiv);
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+</body>
+</html>

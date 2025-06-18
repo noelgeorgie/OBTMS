@@ -1,0 +1,586 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>User Dashboard</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Travelix Project">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- CSS Links -->
+    <link rel="stylesheet" type="text/css" href="{% static 'pass/styles/bootstrap4/bootstrap.min.css'%}">
+    <link rel="stylesheet" href="{% static 'pass/plugins/font-awesome-4.7.0/css/font-awesome.min.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'pass/styles/elements_styles.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'pass/styles/elements_responsive.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'pass/plugins/OwlCarousel2-2.2.1/owl.carousel.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'pass/plugins/OwlCarousel2-2.2.1/owl.theme.default.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'pass/plugins/OwlCarousel2-2.2.1/animate.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'pass/styles/main_styles.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'pass/styles/responsive.css'%}">
+    
+    <style>
+        body {
+        margin: 0;
+        padding: 0;
+        background-color: #f0f8ff;
+        }
+        .home_slider_container {
+            height: 700vh; /* Increased height */
+        }
+        .home_slider_background {
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+        }
+        .home_slider_content {
+            position: relative;
+            z-index: 1;
+            color: white;
+        }    
+        .text-center {
+            text-align: center;
+        }
+		.animated-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1; /* Send behind other content */
+        }
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 165, 0, 0.6);
+            animation: float 6s infinite ease-in-out;
+        }
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0); }
+        }
+        .circle1 { width: 100px; height: 100px; top: 20%; left: 10%; animation-duration: 4s; }
+        .circle2 { width: 150px; height: 150px; top: 30%; left: 70%; animation-duration: 5s; }
+        .circle3 { width: 80px; height: 80px; top: 70%; left: 40%; animation-duration: 6s; }
+        .circle4 { width: 120px; height: 120px; top: 50%; left: 80%; animation-duration: 3s; }
+        
+        
+
+        .table-container {
+            position: relative;
+            margin: 60px auto; /* Reduced margin to bring it higher */
+            padding: 30px; /* Increased padding for more space inside */
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            max-height: 85vh; /* Increased height for more breathing room */
+            width: 90%;
+            max-width: 1200px;
+            overflow: hidden;
+        }
+        
+        .profile-container {
+            min-height: 60vh;
+            padding: 2.5rem;
+            position: relative;
+            z-index: 2;
+            border-radius: 8px;
+            margin-top: -30px; /* Moves it slightly up */
+        }
+        
+        th, td {
+			color: #333;
+            text-align: center;
+        }
+        .fade-in {
+            animation: fadeIn 0.5s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+		.text-center {
+            color: #333; /* Dark grey color */
+        }
+        .super_container {
+            min-height: 100vh; /* Ensure it occupies at least full viewport height */
+            display: flex;
+            flex-direction: column;
+        }
+        .fade-in {
+            animation: fadeIn 0.5s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .table tbody tr {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .table tbody tr.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        th, td {
+            text-align: center; /* Center align table headers and cells */
+        }		
+        .table tbody tr {
+          opacity: 0;
+          transform: translateY(20px);
+          transition: opacity 0.5s ease, transform 0.5s ease;
+      }
+      
+      .table tbody tr.show {
+          opacity: 1;
+          transform: translateY(0);
+      }
+      
+      th, td {
+          text-align: center; /* Center align table headers and cells */
+      }
+
+     
+    
+
+    /* Added animated background particles */
+    .profile-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(circle at center, transparent 0%, rgba(255,255,255,0.2) 100%);
+        animation: gradientMove 15s ease infinite;
+    }
+
+    .profile-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 25px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        padding: 2.5rem;
+        transform: translateY(20px);
+        animation: slideUp 0.8s ease forwards;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .profile-card::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #3498db, #2ecc71, #3498db);
+        background-size: 200% 100%;
+        animation: gradientBorder 3s linear infinite;
+    }
+
+    .profile-header {
+        color: #2c3e50;
+        font-weight: 700;
+        margin-bottom: 2.5rem;
+        position: relative;
+        animation: fadeIn 0.8s ease;
+        font-size: 2.2rem;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .profile-header:after {
+        content: '';
+        display: block;
+        width: 60px;
+        height: 4px;
+        background: linear-gradient(90deg, #3498db, #2ecc71);
+        margin: 15px auto;
+        border-radius: 4px;
+        animation: expandWidth 1s ease forwards;
+    }
+
+    .input-field {
+        border: 2px solid #e0e0e0;
+        border-radius: 12px;
+        padding: 14px;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        background: rgba(248, 249, 250, 0.9);
+        font-size: 1rem;
+    }
+
+    .input-field:focus {
+        border-color: #3498db;
+        box-shadow: 0 0 20px rgba(52, 152, 219, 0.15);
+        transform: translateY(-3px);
+        background: white;
+    }
+
+    .form-group {
+        margin-bottom: 1.8rem;
+        opacity: 0;
+        animation: fadeInUp 0.5s ease forwards;
+        animation-delay: calc(var(--delay) * 0.15s);
+        position: relative;
+    }
+
+    .btn-update {
+        background: linear-gradient(45deg, #3498db, #2ecc71);
+        border: none;
+        border-radius: 30px;
+        padding: 15px 40px;
+        color: white;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        transition: all 0.4s ease;
+        margin-top: 2rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-update:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 30px rgba(52, 152, 219, 0.4);
+    }
+
+    .btn-update::after {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: rgba(255, 255, 255, 0.2);
+        transform: rotate(45deg);
+        animation: buttonGlow 2s linear infinite;
+    }
+
+    .alert {
+        border-radius: 12px;
+        animation: slideDown 0.6s ease;
+        border: none;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .floating-label {
+        position: absolute;
+        pointer-events: none;
+        left: 15px;
+        top: 5px;
+        transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        color: #6c757d;
+        font-size: 0.95rem;
+    }
+
+    .input-field:focus ~ .floating-label,
+    .input-field:not(:placeholder-shown) ~ .floating-label {
+        transform: translateY(-28px) scale(0.85);
+        color: #3498db;
+        font-weight: 600;
+    }
+
+    /* Enhanced and New Animations */
+    @keyframes slideUp {
+        0% { opacity: 0; transform: translateY(30px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+        0% { opacity: 0; transform: scale(0.95); }
+        100% { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes fadeInUp {
+        0% { 
+            opacity: 0;
+            transform: translateY(25px);
+        }
+        100% { 
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes expandWidth {
+        0% { width: 0; opacity: 0; }
+        100% { width: 60px; opacity: 1; }
+    }
+
+    @keyframes buttonGlow {
+        0% { transform: rotate(45deg) translateX(-100%); }
+        100% { transform: rotate(45deg) translateX(100%); }
+    }
+
+    @keyframes slideDown {
+        0% { 
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+        100% { 
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes gradientBorder {
+        0% { background-position: 0% 50%; }
+        100% { background-position: 200% 50%; }
+    }
+
+    @keyframes gradientMove {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+        100% { transform: scale(1); }
+    }
+
+    /* Added hover effects for form groups */
+    .form-group:hover .input-field {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Added focus visual feedback */
+    .form-group:focus-within {
+        transform: scale(1.02);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .profile-card {
+            padding: 1.5rem;
+            margin: 1rem;
+        }
+        
+        .profile-header {
+            font-size: 1.8rem;
+        }
+        
+        .btn-update {
+            padding: 12px 30px;
+        }
+    }
+</style>
+
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+</head>
+<body>
+    <div class="super_container">
+
+        <!-- Header -->
+       
+
+        <!-- Home -->
+        <div class="home">
+            <!-- Home Slider -->
+            <div class="home_slider_container">
+                <div class="owl-carousel home_slider owl-theme">
+                    <!-- Slider Item 1 -->
+                    <div class="home_slider_item">
+                        <div class="home_slider_background" style="background-image:url({% static 'pass/images/home_slider.jpg'%})"></div>
+                        <div class="home_slider_content text-center">
+                            <div class="home_slider_content_inner">
+                                <h1>discover</h1>
+                                <h1>the world with us</h1>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Additional Slider Items -->
+                    <div class="home_slider_item">
+                        <div class="home_slider_background" style="background-image:url({% static 'pass/images/home_slider.jpg'%})"></div>
+                        <div class="home_slider_content text-center">
+                            <div class="home_slider_content_inner">
+                                <h1>discover</h1>
+                                <h1>the world through us</h1>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="home_slider_item">
+                        <div class="home_slider_background" style="background-image:url({% static 'pass/images/home_slider.jpg'%})"></div>
+                        <div class="home_slider_content text-center">
+                            <div class="home_slider_content_inner">
+                                <h1>discover</h1>
+                                <h1>the world around us</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="animated-background">
+                    <div class="circle circle1"></div>
+                    <div class="circle circle2"></div>
+                    <div class="circle circle3"></div>
+                    <div class="circle circle4"></div>
+                </div>
+                
+                <div class="container">
+                  <div class="table-container fade-in">
+                      <div class="profile-container">
+                        <div class="container">
+                            <div class="row justify-content-center">
+                                <div class="col-md-8">
+                                    <div class="profile-card">
+                                        <h2 class="profile-header text-center">Your Profile</h2>
+                    
+                                        {% if messages %}
+                                            {% for message in messages %}
+                                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                                {{ message }}
+                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            {% endfor %}
+                                        {% endif %}
+                    
+                                        <form id="passengerProfileForm" action="{% url 'passenger_profile' %}" method="POST" class="text-center">
+                                            {% csrf_token %}
+                                            <div class="form-row justify-content-center">
+                                                
+                                                <div class="form-group col-md-6" style="--delay: 1">
+                                                    <div class="position-relative">
+                                                        
+                                                        <input class="input-field form-control" type="text" name="name" 
+                                                               value="{{ passenger.name }}" placeholder="Name" required>
+                                                    </div>
+                                                </div>
+                    
+                                                <div class="form-group col-md-6" style="--delay: 2">
+                                                    <div class="position-relative">
+                                                        <input class="input-field form-control" type="email" name="email" 
+                                                               value="{{ passenger.email }}" placeholder="Email" required>
+                                                    </div>
+                                                </div>
+                    
+                                                <div class="form-group col-md-6" style="--delay: 3">
+                                                    <div class="position-relative">
+                                                        <input class="input-field form-control" type="text" name="phone_number" 
+                                                               value="{{ passenger.phone_number }}" placeholder="Phone Number" required>
+                                                    </div>
+                                                </div>
+                    
+                                                <div class="form-group col-md-6" style="--delay: 4">
+                                                    <div class="position-relative">
+                                                        <input class="input-field form-control" type="password" name="old_password" 
+                                                               placeholder=" " required>
+                                                        <label class="floating-label">Current Password</label>
+                                                    </div>
+                                                </div>
+                    
+                                                <div class="form-group col-md-6" style="--delay: 5">
+                                                    <div class="position-relative">
+                                                        <input class="input-field form-control" type="password" name="new_password" 
+                                                               placeholder=" " 
+                                                               title="Minimum 6 characters, at least 1 uppercase letter, 1 digit, 1 special character" 
+                                                               pattern="(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}" required>
+                                                        <label class="floating-label">New Password</label>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="form-group col-md-6" style="--delay: 6">
+                                                    <div class="position-relative">
+                                                        <input class="input-field form-control" type="password" name="confirm_password" 
+                                                               placeholder=" " required>
+                                                        <label class="floating-label">Confirm New Password</label>
+                                                    </div>
+                                                </div>
+                    
+                                            </div>
+                                            <button type="submit" class="btn btn-update">Update Profile</button>
+                                            
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                      
+                      
+                  </div>
+              </div>
+          </div>
+      </div>
+
+            </div>
+        </div>    
+    </div>
+	
+</div>
+<script>
+    function cancelBooking(bookingId) {
+        if (confirm("Are you sure you want to cancel this booking?")) {
+            fetch(`/cancel-booking/${bookingId}/`, {
+                method: 'GET',
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(data.message);
+                    window.location.href = data.redirect;  // Redirect after alert
+                } else {
+                    alert("Error: " + data.error);
+                }
+            })
+            .catch(error => alert("Something went wrong. Please try again."));
+        }
+    }
+</script>
+
+<!-- Add this inside your booking table -->
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Show table rows with animation
+        $('#submissionTable tr').each(function(index) {
+            $(this).delay(index * 200).queue(function(next) {
+                $(this).addClass('show');
+                next();
+            });
+        });
+    });
+</script>
+<script>
+    function adjustTableHeight() {
+        const footerHeight = document.querySelector('.footer').offsetHeight; // Get footer height
+        const windowHeight = window.innerHeight; // Get viewport height
+        const tableContainer = document.querySelector('.table-container');
+
+        // Calculate available height: subtract footer height, margin, and any additional spacing
+        const marginTop = 300; // The margin you set
+        const additionalSpacing = 100; // Any extra spacing you want above the footer
+
+        // Set the max height of the table container
+        tableContainer.style.maxHeight = `${windowHeight - footerHeight - marginTop - additionalSpacing}px`;
+    }
+
+    // Call function on load
+    window.onload = adjustTableHeight;
+
+    // Call function on resize
+    window.onresize = adjustTableHeight;
+</script>
+<script>
+  window.onload = function() {
+      const rows = document.querySelectorAll('.table tbody tr');  // Select all rows
+      rows.forEach((row, index) => {
+          setTimeout(() => {
+              row.classList.add('show');  // Add the 'show' class after a delay
+          }, index * 200);  // Increased delay to 200ms between rows for a slower staggered effect
+      });
+  };
+</script>
+</body>
+</html>

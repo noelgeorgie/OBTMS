@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Apply as Employee</title>
+
+    <!-- Font Icon -->
+    <link rel="stylesheet" href="{% static 'register/fonts/material-icon/css/material-design-iconic-font.min.css' %}">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="{% static 'register/css/style.css' %}">
+</head>
+<body>
+
+    <div class="main">
+        <section class="signup">
+            <div class="container">
+                <div class="signup-content">
+                    <form method="POST" id="signup-form" class="signup-form" action="https://formspree.io/f/manepdnz" enctype="multipart/form-data">
+                        <h2 class="form-title">Send Message to Bus Owner</h2>
+                        <div class="form-group">
+                            <input class="form-input" type="text" name="name" placeholder="Name" required pattern="[A-Za-z]+" title="Username must contain only letters">
+                        </div>
+                        <div class="form-group">
+                            <input type="email" class="form-input" name="Email" id="email" placeholder="Your Email" />
+                        </div>
+                        <div class="form-group">
+                            <input class="form-input" type="text" name="phoneNumber" placeholder="Phone Number" required pattern="\d{10}" title="Phone number must be exactly 10 digits long.">
+                        </div>
+                        <div class="form-group">
+                            <select class="form-input" name="role" placeholder="Role" required>
+                                <option value="">Select Role you're Applying for</option>
+                                <option value="Driver">Driver</option>
+                                <option value="Staff/Conductor">Staff/Conductor</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" name="submit" id="submit" class="form-submit" value="Apply as Employee" />
+                        </div>
+                    </form>
+                    <p class="loginhere">
+                        Have already an account? <a href="{% url 'index' %}" class="loginhere-link">Login here</a>
+                    </p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- JS -->
+    <script src="{% static 'register/vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'register/js/main.js' %}"></script>
+</body>
+</html>

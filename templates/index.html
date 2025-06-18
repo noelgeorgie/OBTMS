@@ -1,0 +1,311 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Bus Reservation System</title>
+
+        <link rel="icon" type="image/png" href="{% static 'index/images/icons/favicon.ico' %}"/>
+        <link rel="stylesheet" type="text/css" href="{% static 'index/vendor/bootstrap/css/bootstrap.min.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'index/fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'index/vendor/animate/animate.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'index/vendor/css-hamburgers/hamburgers.min.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'index/vendor/select2/select2.min.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'index/css/util.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'index/css/main.css' %}">
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+                font-family: Arial, sans-serif;
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                min-height: 100vh;
+            }
+        <!-- video {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                z-index: -1;
+            }-->
+            .navbar {
+                background-color: #f8f8f8; /* Off-white color */
+                display: flex;
+                justify-content: flex-end; /* Align items to the right */
+                align-items: center;
+                width: 100%;
+                padding: 10px 20px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                position: absolute; /* Position it at the top */
+                top: 0;
+                left: 0;
+            }
+            .navbar-title {
+                margin: 0;
+                font-size: 24px;
+                color: #333; /* Darker text for contrast */
+            }    
+            .nav-link {
+                text-decoration: none; /* Remove underline */
+                color: #333; /* Default text color */
+            }    
+            .nav-link:hover {
+                background-color: #f0f0f0; /* Light off-white on hover */
+                color: #333; /* Ensure text color stays dark on hover */
+            }
+        
+            .main-container {
+                text-align: center;
+                width: 100%;
+            }    
+            .heading-container h1 {
+                font-size: 48px;
+                color: white;
+                margin: 0;
+                padding: 80px 0 20px; /* Added padding to accommodate navbar */
+                font-weight: bold;
+            }
+            .login-container,
+            .registration-container {
+                background: rgba(255, 255, 255, 0.9);
+                padding: 20px;
+                border-radius: 8px;
+                width: 300px;
+                margin: 0 auto;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+            .input-group {
+                margin-bottom: 15px;
+            }
+            .input-group label {
+                display: block;
+                text-align: left;
+                margin-bottom: 5px;
+                font-weight: bold;
+            }
+            .input-group input,
+            .input-group select {
+                width: 100%;
+                padding: 8px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+            }
+            button {
+                width: 100%;
+                padding: 10px;
+                background-color: #28a745;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }    
+            button:hover {
+                background-color: #218838;
+            }
+            .forgot-password {
+                display: block;
+                margin-top: 15px;
+                text-align: center;
+                color: #007BFF;
+                text-decoration: none;
+            }
+            .forgot-password:hover {
+                text-decoration: underline;
+            }
+            /*Import Poppins Font*/
+            @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
+        
+        /*set colours*/
+        :root{
+          --primary-color:#7611fa;
+          --secondary-color:#cea8ff;
+        }
+        
+          /*Css Reset*/
+        *,*:after,*:before{
+          box-sizing: border-box;
+        }
+        
+            /*Body*/
+        body{
+          font-family: poppins;
+          background-color: var(--secondary-color);
+        }
+        
+            /*The outer container components*/
+        .container{
+          position: absolute;
+          left: 0;
+          top:0;
+          right: 0;
+          bottom: 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        
+        .tabs{
+          display: flex;
+          position: relative;
+          background-color: #fff;
+          box-shadow: 0 0 1px rgba(24,94,224,0.15),0 6px 12px 0 rgba(24,94,225,0.15);
+          padding:0.75rem;
+          border-radius:99px;
+        }
+        
+        .tabs *{
+          z-index: 2;
+        }
+            /*Remove the default radio button option*/
+        input[type="radio"]{
+          display: none;
+        }
+        
+            /*Style the tabs*/
+        .tab{
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height:54px;
+          width:200px;
+          font-size:1.25rem;
+          font-weight: 500;
+          border-radius: 99px;
+          cursor:pointer;
+          transition: color 0.15s ease-in;
+        }
+        
+        input[type="radio"]:checked + label{
+          color:var(--primary-color);
+        }
+        
+        input[type="radio"]:checked + label > .notification{
+          background-color: var(--primary-color);
+          color:#fff;
+        }
+        
+            /*Enable the sliding effect*/
+        input[id="radio1"]:checked ~ .slide{
+          transform: translateX(0);
+        }
+        
+        input[id="radio2"]:checked ~ .slide{
+          transform: translateX(100%);
+        }
+        
+        input[id="radio3"]:checked ~ .slide{
+          transform: translateX(200%);
+        }
+        
+        .slide{
+          position: absolute;
+          display: flex;
+          height: 54px;
+          width:200px;
+          background-color: var(--secondary-color);
+          z-index:1;
+          border-radius:99px;
+          transition: 0.25s ease-out;
+        }
+        
+        @media (max-width:700px){
+          .tabs{
+            transform:scale(0.6);
+          }
+        }
+        
+        </style>      
+    </head>
+    <body>
+        <video autoplay muted loop>
+            <source src="{% static 'index/images/1234.mp4' %}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+       <nav class="navbar navbar-expand-lg navbar-light bg-light">
+               <div class="collapse navbar-collapse" id="navbarNav">
+                
+                   <ul class="navbar-nav ml-auto">
+                       <li class="nav-item">
+                           <a class="nav-link" href="{% url 'owner_register' %}">Register as Bus Owner</a>
+                           <a class="nav-link" >|</a>
+                           <a class="nav-link" href="{% url 'employee_register' %}">Register as Employee</a>
+                       </li>
+                   </ul>
+               </div>
+           </nav>
+       
+           <div class="main-container">
+               <div class="heading-container">
+                   <h1>Online Bus Travel Management System</h1> 
+               </div>
+               <div class="login-container">
+                   <h2>Login</h2>
+                   <br>
+                   
+                   <form action="{% url 'index' %}" method="POST">
+                    {% csrf_token %} <!-- This tag is required for CSRF protection -->
+                        <div class="input-group">
+                            <input 
+                                type="email" 
+                                name="email" 
+                                id="email" 
+                                placeholder="Email" 
+                                required 
+                                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" 
+                                title="Please enter a valid email address (e.g., user@example.com)">
+                        </div>
+                        <div class="input-group">
+                            <input 
+                                type="password" 
+                                name="password" 
+                                id="password" 
+                                placeholder="Password" 
+                                required 
+                                pattern=".{6,}" 
+                                title="Password must be at least 6 characters long">
+                        </div>
+                        <div class="input-group">  
+                            <select name="user_type" id="user_type" required>
+                                <option value="">Select the User Type</option>
+                                <option value="pass">Passenger</option>
+                                <option value="busowner">Bus Owner</option>
+                                <option value="admin">Admin</option>
+                                <option value="driver">Driver</option>
+                                <option value="staff">Staff</option>
+                            </select>
+                        </div>
+                        <button type="submit">Login</button>
+                    </form>
+                    
+                    <a href="{% url 'forgot_password' %}" class="forgot-password">Forgot Password?</a>
+                    <a href="{% url 'passenger_register' %}" class="forgot-password" id="registration-link">Not Registered? Click here to register.</a>
+                </div>
+            </div>
+       </div>
+       <script>
+        {% if messages %}
+            {% for message in messages %}
+                localStorage.setItem('django_message', "{{ message|escapejs }}");
+            {% endfor %}
+        {% endif %}
+    
+        // Show message from localStorage
+        const msg = localStorage.getItem('django_message');
+        if (msg) {
+            alert(msg);
+            localStorage.removeItem('django_message');  // Remove it after showing once
+        }
+    </script>
+    
+   </body>
+</html>
+       

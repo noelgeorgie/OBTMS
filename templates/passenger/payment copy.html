@@ -1,0 +1,299 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>User Dashboard</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Travelix Project">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- CSS Links -->
+    <link rel="stylesheet" type="text/css" href="{% static 'pass/styles/bootstrap4/bootstrap.min.css'%}">
+    <link rel="stylesheet" href="{% static 'pass/plugins/font-awesome-4.7.0/css/font-awesome.min.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'pass/styles/elements_styles.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'pass/styles/elements_responsive.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'pass/plugins/OwlCarousel2-2.2.1/owl.carousel.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'pass/plugins/OwlCarousel2-2.2.1/owl.theme.default.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'pass/plugins/OwlCarousel2-2.2.1/animate.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'pass/styles/main_styles.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'pass/styles/responsive.css'%}">
+    
+    <style>
+        body {
+        margin: 0;
+        padding: 0;
+        background-color: #f0f8ff;
+        overflow-y: auto; /* Enable vertical scrollbar if needed */
+        }
+        .home_slider_container {
+            height: 700vh; /* Increased height */
+        }
+        .home_slider_background {
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+        }
+        .home_slider_content {
+            position: relative;
+            z-index: 1;
+            color: white;
+        }    
+        .text-center {
+            text-align: center;
+        }
+		.animated-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1; /* Send behind other content */
+        }
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 165, 0, 0.6);
+            animation: float 6s infinite ease-in-out;
+        }
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0); }
+        }
+        .circle1 { width: 100px; height: 100px; top: 20%; left: 10%; animation-duration: 4s; }
+        .circle2 { width: 150px; height: 150px; top: 30%; left: 70%; animation-duration: 5s; }
+        .circle3 { width: 80px; height: 80px; top: 70%; left: 40%; animation-duration: 6s; }
+        .circle4 { width: 120px; height: 120px; top: 50%; left: 80%; animation-duration: 3s; }
+        .table-container {
+            position: relative;
+            margin: 200px auto; /* Adjust as needed */
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            z-index: 1; /* Ensure this is above the background */
+            overflow-y: auto; /* Add scrollbar to the table container if content overflows */
+            max-height: 70vh; /* Limit height and allow scrolling within this section */
+        }
+        th, td {
+			color: #333;
+            text-align: center;
+        }
+        .fade-in {
+            animation: fadeIn 0.5s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+		.text-center {
+            color: #333; /* Dark grey color */
+        }
+        .super_container {
+            min-height: 100vh; /* Ensure it occupies at least full viewport height */
+            display: flex;
+            flex-direction: column;
+        }
+        .fade-in {
+            animation: fadeIn 0.5s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .table tbody tr {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        .table tbody tr.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        th, td {
+            text-align: center; /* Center align table headers and cells */
+        }		
+        .table tbody tr {
+          opacity: 0;
+          transform: translateY(20px);
+          transition: opacity 0.5s ease, transform 0.5s ease;
+      }
+      
+      .table tbody tr.show {
+          opacity: 1;
+          transform: translateY(0);
+      }
+      
+      th, td {
+          text-align: center; /* Center align table headers and cells */
+      }
+    </style>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+</head>
+<body style="background-color: #f8f9fa;">
+    <div class="super_container">
+
+        <!-- Header -->
+        <header class="header">
+            <!-- Top Bar -->
+            <div class="top_bar">
+                <div class="container">
+                    <div class="row">
+                        <div class="col d-flex flex-row">
+                            <div class="phone">+91 9897654387</div>
+                            <div class="social">
+                                <ul class="social_list">
+                                    <li class="social_list_item"><a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a></li>
+                                    <li class="social_list_item"><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                                    <li class="social_list_item"><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                                    <li class="social_list_item"><a href="#"><i class="fa fa-dribbble" aria-hidden="true"></i></a></li>
+                                    <li class="social_list_item"><a href="#"><i class="fa fa-behance" aria-hidden="true"></i></a></li>
+                                    <li class="social_list_item"><a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Navigation -->
+            <nav class="main_nav">
+                <div class="container">
+                    <div class="row">
+                        <div class="col main_nav_col d-flex flex-row align-items-center justify-content-start">
+                            <div class="logo_container">
+                                <div class="logo"><a href="#"><img src="{% static 'pass/images/logo.png'%}" alt="">travelix</a></div>
+                            </div>
+                            <div class="main_nav_container ml-auto">
+                                <ul class="main_nav_list">
+                                  <li class="main_nav_item"><a href="{% url 'passenger_dashboard' %}">home</a></li>
+                                  <li class="main_nav_item"><a href="{% url 'passenger_about' %}">about us</a></li>
+                                  <li class="main_nav_item"><a href="{% url 'passenger_offers' %}">offers</a></li>
+                                  <li class="main_nav_item"><a href="{% url 'passenger_blog' %}">news</a></li>
+                                  <li class="main_nav_item"><a href="{% url 'passenger_contact' %}">contact</a></li>
+                                </ul>
+                            </div>
+                            <div class="content_search ml-lg-0 ml-auto">
+                                <form id="search_form" class="search_form bez_1">
+                                    <input type="search" class="search_content_input bez_1">
+                                </form>
+                                <div class="hamburger">
+                                    <i class="fa fa-bars trans_200"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <!-- Home -->
+        <div class="home">
+            <!-- Home Slider -->
+            <div class="home_slider_container">
+                <div class="owl-carousel home_slider owl-theme">
+                    <!-- Slider Item 1 -->
+                    <div class="home_slider_item">
+                        <div class="home_slider_background" style="background-image:url({% static 'pass/images/home_slider.jpg'%})"></div>
+                        <div class="home_slider_content text-center">
+                            <div class="home_slider_content_inner">
+                                <h1>discover</h1>
+                                <h1>the world with us</h1>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Additional Slider Items -->
+                    <div class="home_slider_item">
+                        <div class="home_slider_background" style="background-image:url({% static 'pass/images/home_slider.jpg'%})"></div>
+                        <div class="home_slider_content text-center">
+                            <div class="home_slider_content_inner">
+                                <h1>discover</h1>
+                                <h1>the world through us</h1>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="home_slider_item">
+                        <div class="home_slider_background" style="background-image:url({% static 'pass/images/home_slider.jpg'%})"></div>
+                        <div class="home_slider_content text-center">
+                            <div class="home_slider_content_inner">
+                                <h1>discover</h1>
+                                <h1>the world around us</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="animated-background">
+                    <div class="circle circle1"></div>
+                    <div class="circle circle2"></div>
+                    <div class="circle circle3"></div>
+                    <div class="circle circle4"></div>
+                </div>
+                
+                <div class="container">
+                    <div class="table-container fade-in">
+                        <h2 class="text-center mb-4">Payment Information</h2>
+                        <div class="row">
+                            <div class="col-md-6 offset-md-3">
+                                <div class="card p-4">
+                                    <h5 class="card-title">Booking Details</h5>
+                                    
+                                    <!-- Bus Details -->
+                                    <p><strong>Bus Name:</strong> {{ bus.bus_name }}</p>
+                                    <p><strong>Bus ID:</strong> {{ bus.bus_id }}</p>
+                        
+                                    <!-- Schedule Details -->
+                                    <p><strong>Departure Time:</strong> {{ schedule.departure_time }}</p>
+                                    <p><strong>Arrival Time:</strong> {{ schedule.arrival_time }}</p>
+                        
+                                    <!-- Route Details -->
+                                    <p><strong>The journey starts from:</strong> {{ route.source }}</p>
+                                    <p><strong>The journey ends at:</strong> {{ route.destination }}</p>
+                        
+                                    <!-- Display the Fare Rate and Distance -->
+                                    <p><strong>Fare Rate:</strong> ₹{{ fare_rate }}</p>
+                                    <p><strong>Distance:</strong> {{ distance }} km</p>
+                        
+                                    <!-- Selected Seats -->
+                                    <p><strong>Selected Seats:</strong> {{ selected_seats|join:", " }}</p>
+                        
+                                    <!-- Total Fare -->
+                                    <p><strong>Total Cost= Fare Rate × Distance × Number of Seats:  </strong> ₹{{ total_fare }}</p>
+                                    <hr>
+                
+                                    <!-- Payment Instructions -->
+                                    <p class="text-muted">Please confirm your booking and proceed with the payment. If you wish to cancel, you can do so below.</p>
+                
+                                    <!-- Buttons -->
+                                    <div class="d-flex justify-content-between">
+                                        <form method="post" action="{% url 'payment' %}">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-success">Confirm Payment</button>
+                                        </form>
+                                        <form method="get" action="{% url 'select_seats' schedule_id=schedule.schedule_id bus_id=bus.bus_id %}">
+                                            <button type="submit" class="btn btn-secondary">Cancel Booking</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+   
+
+    <!-- Optional Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,332 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Blog</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="description" content="Travelix Project">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="{% static 'pass/styles/bootstrap4/bootstrap.min.css'%}">
+<link href="{% static 'pass/plugins/font-awesome-4.7.0/css/font-awesome.min.css'%}" rel="stylesheet" type="text/css">
+<link href="{% static 'pass/plugins/colorbox/colorbox.css'%}" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="{% static 'pass/styles/blog_styles.css'%}">
+<link rel="stylesheet" type="text/css" href="{% static 'pass/styles/blog_responsive.css'%}">
+</head>
+
+<body>
+
+<div class="super_container">
+	
+	<!-- Header -->
+
+	<header class="header">
+
+		<!-- Top Bar -->
+
+		<div class="top_bar">
+			<div class="container">
+				<div class="row">
+					<div class="col d-flex flex-row">
+						<div class="phone">+91 9897654387</div>
+						<div class="social">
+							<ul class="social_list">
+								<li class="social_list_item"><a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a></li>
+								<li class="social_list_item"><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+								<li class="social_list_item"><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+								<li class="social_list_item"><a href="#"><i class="fa fa-dribbble" aria-hidden="true"></i></a></li>
+								<li class="social_list_item"><a href="#"><i class="fa fa-behance" aria-hidden="true"></i></a></li>
+								<li class="social_list_item"><a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+							</ul>
+						</div>
+						<div class="user_box ml-auto">
+							<div class="user_box_register user_box_link"><a href="{% url 'logout_and_redirect' %}">register</a></div>
+						</div>
+					</div>
+				</div>
+			</div>		
+		</div>
+
+		<!-- Main Navigation -->
+
+		<nav class="main_nav">
+			<div class="container">
+				<div class="row">
+					<div class="col main_nav_col d-flex flex-row align-items-center justify-content-start">
+						<div class="logo_container">
+							<div class="logo"><a href="#"><img src="{% static 'pass/images/logo.png'%}" alt="">travelix</a></div>
+						</div>
+						<div class="main_nav_container ml-auto">
+							<ul class="main_nav_list">
+								<li class="main_nav_item"><a href="{% url 'passenger_dashboard' %}">home</a></li>
+								<li class="main_nav_item"><a href="{% url 'passenger_about' %}">about us</a></li>
+								<li class="main_nav_item"><a href="{% url 'passenger_offers' %}">offers</a></li>
+								<li class="main_nav_item"><a href="{% url 'passenger_contact' %}">contact</a></li>
+							</ul>
+						</div>
+						
+
+						
+					</div>
+				</div>
+			</div>	
+		</nav>
+
+	</header>
+
+	<div class="menu trans_500">
+		<div class="menu_content d-flex flex-column align-items-center justify-content-center text-center">
+			<div class="menu_close_container"><div class="menu_close"></div></div>
+			<div class="logo menu_logo"><a href="#"><img src="{% static 'pass/images/logo.png'%}" alt=""></a></div>
+			<ul>
+				<li class="menu_item"><a href="{% url 'passenger_dashboard' %}">home</a></li>
+				<li class="main_nav_item"><a href="{% url 'passenger_about' %}">about us</a></li>
+				<li class="main_nav_item"><a href="{% url 'passenger_offers' %}">offers</a></li>
+				<li class="main_nav_item"><a href="{% url 'passenger_contact' %}">contact</a></li>
+			</ul>
+		</div>
+	</div>
+
+	<!-- Home -->
+
+	<div class="home">
+		<div class="home_background parallax-window" data-parallax="scroll" data-image-src="{% static 'pass/images/blog_background.jpg'%}"></div>
+		<div class="home_content">
+			<div class="home_title">The Insight Hub</div>
+		</div>
+	</div>
+
+	<!-- Blog -->
+
+	<div class="blog">
+		<div class="container">
+			<div class="row">
+
+				<!-- Blog Content -->
+
+				<div class="col-lg-8">
+					
+					<div class="blog_post_container">
+
+						<!-- Blog Post -->
+						
+						<div class="blog_post">
+							<div class="blog_post_image">
+								<img src="{% static 'pass/images/blog_3.jpg'%}" alt="https://unsplash.com/@stilclassics">
+								<div class="blog_post_date d-flex flex-column align-items-center justify-content-center">
+									<div class="blog_post_day">24</div>
+									<div class="blog_post_month">Jan, 2025</div>
+								</div>
+							</div>
+							<div class="blog_post_meta">
+								<ul>
+									
+								</ul>
+							</div>
+							<div class="blog_post_title"><a href="#">Try these new dream destinations</a></div>
+							<div class="blog_post_text">
+								<p>Imagine yourself wandering through serene landscapes, much like the peaceful ambiance of a tranquil lake. Embrace the allure of diverse places, where the rich culture and vibrant experiences will leave you with cherished memories. Let the thrill of adventure drive you to unique spots, from bustling cities to hidden gems nestled in nature’s beauty. Enrich your journey by exploring destinations that blend historic charm with modern excitement, allowing you to connect with each location’s essence. Set your sights on extraordinary places and embark on a journey that promises both relaxation and exploration.</p>
+							</div>
+							
+						</div>
+
+					</div>
+						
+					
+				</div>
+
+				<!-- Blog Sidebar -->
+
+				<div class="col-lg-4 sidebar_col">
+
+					<!-- Sidebar Search -->
+					
+					
+					<!-- Sidebar Archives -->
+					<div class="sidebar_categories">
+						<div class="sidebar_title"></div>
+						<div class="sidebar_list">
+							<ul>
+								<li><a href="#">Travel</a></li>
+								<li><a href="#">Exotic Destinations</a></li>
+								<li><a href="#">City Breaks</a></li>
+								<li><a href="#">Travel Tips</a></li>
+								<li><a href="#">Lifestyle & Travel</a></li>
+								<li><a href="#">City Breaks</a></li>
+								<li><a href="#">Uncategorized</a></li>
+							</ul>
+						</div>
+					</div>
+
+					<!-- Sidebar Latest Posts -->
+
+					
+
+					<!-- Sidebar Gallery -->
+					<div class="sidebar_gallery">
+						<div class="sidebar_title">Instagram</div>
+						<div class="gallery_container">
+							<ul class="gallery_items d-flex flex-row align-items-start justify-content-between flex-wrap">
+								<li class="gallery_item">
+									<a class="colorbox" href="https://images.unsplash.com/photo-1473625247510-8ceb1760943f?ixlib=rb-0.3.5&s=c0996cd16eda8c6f54c398de02d03cd3&auto=format&fit=crop&w=720&q=80">
+										<img src="{% static 'pass/images/gallery_1.jpg'%}" alt="https://unsplash.com/@mantashesthaven">
+									</a>
+								</li>
+								<li class="gallery_item">
+									<a class="colorbox" href="https://images.unsplash.com/photo-1495162048225-6b3b37b8a69e?ixlib=rb-0.3.5&s=861dd3c7b9d3e735d7fd7cbb1eefed64&auto=format&fit=crop&w=720&q=80">
+										<img src="{% static 'pass/images/gallery_2.jpg'%}" alt="https://unsplash.com/@kensuarez">
+									</a>
+								</li>
+								<li class="gallery_item">
+									<a class="colorbox" href="https://images.unsplash.com/photo-1502646275263-04be86afa386?ixlib=rb-0.3.5&s=682a41d7d9bf6e3feabc73a5fdd61dd2&auto=format&fit=crop&w=720&q=80">
+										<img src="{% static 'pass/images/gallery_3.jpg'%}" alt="https://unsplash.com/@jakobowens1">
+									</a>
+								</li>
+								<li class="gallery_item">
+									<a class="colorbox" href="https://images.unsplash.com/photo-1484820301304-0b43512779dc?ixlib=rb-0.3.5&s=7a3393e9f507fb4718c36337a8014c52&auto=format&fit=crop&w=720&q=80">
+										<img src="{% static 'pass/images/gallery_4.jpg'%}" alt="https://unsplash.com/@seefromthesky">
+									</a>
+								</li>
+								<li class="gallery_item">
+									<a class="colorbox" href="https://images.unsplash.com/photo-1490380169520-0a4b88d52565?ixlib=rb-0.3.5&s=7e6b68b1911fb4ffeea4c0750b8a5269&auto=format&fit=crop&w=720&q=80">
+										<img src="{% static 'pass/images/gallery_5.jpg'%}" alt="https://unsplash.com/@deannaritchie">
+									</a>
+								</li>
+								<li class="gallery_item">
+									<a class="colorbox" href="https://images.unsplash.com/photo-1504434026032-a7e440a30b68?ixlib=rb-0.3.5&s=2cc35bf903b78ba4f7f7ed69bc2abe3f&auto=format&fit=crop&w=720&q=80">
+										<img src="{% static 'pass/images/gallery_6.jpg'%}" alt="https://unsplash.com/@benobro">
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Footer -->
+
+	<footer class="footer">
+		<div class="container">
+			<div class="row">
+
+				<!-- Footer Column -->
+				<div class="col-lg-3 footer_column">
+					<div class="footer_col">
+						<div class="footer_content footer_about">
+							<div class="logo_container footer_logo">
+								<div class="logo"><a href="#"><img src="{% static 'pass/images/logo.png'%}" alt="">travelix</a></div>
+							</div>
+							<p class="footer_about_text"> With our user-friendly platform, extensive range of routes, and commitment to exceptional service, we strive to make every journey memorable. Whether you’re booking a bus ticket or exploring our exciting tours, you can trust us to deliver convenience, reliability, and quality. Join our community of satisfied travelers today and embark on your next adventure with confidence.</p>
+							<ul class="footer_social_list">
+								<li class="footer_social_item"><a ><i class="fa fa-pinterest"></i></a></li>
+								<li class="footer_social_item"><a ><i class="fa fa-facebook-f"></i></a></li>
+								<li class="footer_social_item"><a ><i class="fa fa-twitter"></i></a></li>
+								<li class="footer_social_item"><a ><i class="fa fa-dribbble"></i></a></li>
+								<li class="footer_social_item"><a ><i class="fa fa-behance"></i></a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+
+				<!-- Footer Column -->
+				<div class="col-lg-3 footer_column">
+					<div class="footer_col">
+						<div class="footer_title">More...</div>
+						<div class="footer_content footer_blog">
+							
+							<!-- Footer blog item -->
+							<div class="footer_blog_item clearfix">
+								<div class="footer_blog_image"><img src="{% static 'pass/images/footer_blog_1.jpg'%}" alt="https://unsplash.com/@avidenov"></div>
+								<div class="footer_blog_content">
+									<div class="footer_blog_title"><a >Discover New Horizons</a></div>
+									
+								</div>
+							</div>
+							
+							<!-- Footer blog item -->
+							<div class="footer_blog_item clearfix">
+								<div class="footer_blog_image"><img src="{% static 'pass/images/footer_blog_2.jpg'%}" alt="https://unsplash.com/@deannaritchie"></div>
+								<div class="footer_blog_content">
+									<div class="footer_blog_title"><a>Uncover Hidden Gems</a></div>
+									
+								</div>
+							</div>
+
+							<!-- Footer blog item -->
+							<div class="footer_blog_item clearfix">
+								<div class="footer_blog_image"><img src="{% static 'pass/images/footer_blog_3.jpg'%}" alt="https://unsplash.com/@bergeryap87"></div>
+								<div class="footer_blog_content">
+									<div class="footer_blog_title"><a >Explore More in 2024</a></div>
+									
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+
+				<!-- Footer Column -->
+				<div class="col-lg-3 footer_column">
+					<div class="footer_col">
+						<div class="footer_title">tags</div>
+						<div class="footer_content footer_tags">
+							<ul class="tags_list clearfix">
+								<li class="tag_item"><a href="">design</a></li>
+								<li class="tag_item"><a href="">fashion</a></li>
+								<li class="tag_item"><a href="">music</a></li>
+								<li class="tag_item"><a href="">video</a></li>
+								<li class="tag_item"><a href="">party</a></li>
+								<li class="tag_item"><a href="">photography</a></li>
+								<li class="tag_item"><a href="">adventure</a></li>
+								<li class="tag_item"><a href="">travel</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+
+				<!-- Footer Column -->
+				<div class="col-lg-3 footer_column">
+					<div class="footer_col">
+						<div class="footer_title">contact info</div>
+						<div class="footer_content footer_contact">
+							<ul class="contact_info_list">
+								<li class="contact_info_item d-flex flex-row">
+									<div><div class="contact_info_icon"><img src="{% static 'pass/images/placeholder.svg'%}" alt=""></div></div>
+									<div class="contact_info_text">NH-66, Vyttila, Aroor Bypass, near to Kundanoor, Maradu, Kochi, Kerala 682304</div>
+								</li>
+								<li class="contact_info_item d-flex flex-row">
+									<div><div class="contact_info_icon"><img src="{% static 'pass/images/phone-call.svg'%}" alt=""></div></div>
+									<div class="contact_info_text">+91 9897654387</div>
+								</li>
+								<li class="contact_info_item d-flex flex-row">
+									<div><div class="contact_info_icon"><img src="{% static 'pass/images/message.svg'%}" alt=""></div></div>
+									<div class="contact_info_text"><a href="mailto:contactme@gmail.com?Subject=Hello" target="_top">travelix@gmail.com</a></div>
+								</li>
+								<li class="contact_info_item d-flex flex-row">
+									<div><div class="contact_info_icon"><img src="{% static 'pass/images/planet-earth.svg'%}" alt=""></div></div>
+									<div class="contact_info_text"><a href="{% url 'passenger_dashboard' %}">www.travelix.com</a></div>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</footer>
+
+</div>
+
+<script src="{% static 'pass/js/jquery-3.2.1.min.js'%}"></script>
+<script src="{% static 'pass/styles/bootstrap4/popper.js'%}"></script>
+<script src="{% static 'pass/styles/bootstrap4/bootstrap.min.js'%}"></script>
+<script src="{% static 'pass/plugins/colorbox/jquery.colorbox-min.js'%}"></script>
+<script src="{% static 'pass/plugins/parallax-js-master/parallax.min.js'%}"></script>
+<script src="{% static 'pass/js/blog_custom.js'%}"></script>
+
+</body>
+
+</html>
