@@ -1,1 +1,3 @@
-# OBTMS - Online Bus Travel Management System
+# OBTMS 
+
+Online Bus Travel Management System
