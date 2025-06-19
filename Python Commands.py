@@ -28,3 +28,6 @@
 
 # You can install the packages listed in your requirements.txt file using the following command
     # pip install -r requirements.txt
+
+# You can generate a requirements.txt file with the installed packages in your virtual environment using the following command
+    #pip freeze > requirements.txt
